@@ -22,8 +22,8 @@ const Hero = () => {
       </div>
       
       {/* Content */}
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
-        <div className="flex justify-center mb-8">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="flex justify-center mb-4">
           <img 
             src="/lovable-uploads/fec56b94-d58e-44f1-9568-71d7cfcb6770.png" 
             alt="Gold Coast Global Logistics company logo with gold and blue elements" 
