@@ -11,9 +11,9 @@ const Hero = () => {
       {/* Background Image Container with optimized loading */}
       <div className="absolute inset-0 z-0">
         <img 
-          src="/lovable-uploads/9b323c79-5f84-4a76-b4f9-58377cd77404.png" 
-          alt="Container ship at port with colorful shipping containers ready for international transport" 
-          className="w-full h-[500px] object-cover"
+          src="/lovable-uploads/hero-door-to-door.png" 
+          alt="Door-to-door shipping from Texas USA to Ghana - showing American home entrance connected to Ghanaian home via golden shipping container" 
+          className="w-full h-[500px] object-cover object-center"
           loading="eager" 
           fetchPriority="high"
         />
