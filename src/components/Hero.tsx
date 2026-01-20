@@ -21,20 +21,18 @@ const Hero = () => {
         <div className="absolute inset-0 bg-black/40"></div>
       </div>
       
-      {/* Logo - Top Left */}
-      <div className="absolute top-4 left-4 z-20">
-        <img 
-          src="/lovable-uploads/fec56b94-d58e-44f1-9568-71d7cfcb6770.png" 
-          alt="Gold Coast Global Logistics company logo with gold and blue elements" 
-          className="h-20 md:h-24 object-contain"
-          loading="eager"
-          width="240"
-          height="96"
-        />
-      </div>
-      
       {/* Content */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="flex justify-center mb-8">
+          <img 
+            src="/lovable-uploads/fec56b94-d58e-44f1-9568-71d7cfcb6770.png" 
+            alt="Gold Coast Global Logistics company logo with gold and blue elements" 
+            className="h-32 object-contain mix-blend-screen"
+            loading="eager"
+            width="320"
+            height="128"
+          />
+        </div>
         <h1 className="text-4xl md:text-5xl font-bold text-center text-white mt-8">
           Reliable Door-to-Door Shipping from the USA to Ghana
         </h1>
