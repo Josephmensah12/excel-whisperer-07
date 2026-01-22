@@ -17,6 +17,7 @@ import { useToast } from "@/hooks/use-toast";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import { parseExcelFile, detectColumnMapping, ColumnMapping, ParsedShipment, normalizePhone } from "@/lib/excelParser";
+import { downloadShipmentTemplate } from "@/lib/excelTemplate";
 import { SHIPMENT_STATUSES, ShipmentStatus } from "@/constants/shipmentStatuses";
 
 interface Shipment {
@@ -502,15 +503,23 @@ export default function AdminShipments() {
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-4">
-                    <div>
-                      <Label htmlFor="excel-file">Select Excel File</Label>
-                      <Input
-                        id="excel-file"
-                        type="file"
-                        accept=".xls,.xlsx"
-                        onChange={handleFileChange}
-                        className="mt-2"
-                      />
+                    <div className="flex flex-col sm:flex-row gap-4">
+                      <div className="flex-1">
+                        <Label htmlFor="excel-file">Select Excel File</Label>
+                        <Input
+                          id="excel-file"
+                          type="file"
+                          accept=".xls,.xlsx"
+                          onChange={handleFileChange}
+                          className="mt-2"
+                        />
+                      </div>
+                      <div className="flex items-end">
+                        <Button variant="outline" onClick={downloadShipmentTemplate}>
+                          <Download className="w-4 h-4 mr-2" />
+                          Download Template
+                        </Button>
+                      </div>
                     </div>
 
                     {importResult && (
