@@ -1,20 +1,24 @@
+import { toast as sonnerToast } from "sonner";
 
-import { ToastT, toast as sonnerToast } from "sonner";
-
-type ToasterToast = ToastT & {
-  id: string;
+type ToasterToast = {
+  id?: string;
   title?: React.ReactNode;
   description?: React.ReactNode;
   action?: React.ReactNode;
+  variant?: "default" | "destructive";
 };
 
 const useToast = () => {
   const toast = (props: ToasterToast) => {
-    sonnerToast(props.title as string, {
-      description: props.description,
-      action: props.action,
-      ...props
-    });
+    if (props.variant === "destructive") {
+      sonnerToast.error(props.title as string, {
+        description: props.description,
+      });
+    } else {
+      sonnerToast(props.title as string, {
+        description: props.description,
+      });
+    }
   };
 
   return {

@@ -3,7 +3,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export async function getParameter(name: string): Promise<string | null> {
   const { data, error } = await supabase
-    .from('parameters')
+    .from('parameters' as any)
     .select('value')
     .eq('name', name)
     .single();
@@ -13,7 +13,7 @@ export async function getParameter(name: string): Promise<string | null> {
     return null;
   }
 
-  return data?.value ?? null;
+  return (data as any)?.value ?? null;
 }
 
 // Shipping calculation

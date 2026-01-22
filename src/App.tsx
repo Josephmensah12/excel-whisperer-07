@@ -1,4 +1,3 @@
-
 import { Routes, Route } from "react-router-dom";
 import RequestCall from "@/pages/RequestCall";
 import RequestQuote from "@/pages/RequestQuote";
@@ -7,6 +6,9 @@ import TermsOfService from "@/pages/TermsOfService";
 import FrequentlyShippedItems from "@/pages/FrequentlyShippedItems";
 import PrivacyPolicy from "@/pages/PrivacyPolicy";
 import Index from "@/pages/Index";
+import Track from "@/pages/Track";
+import Auth from "@/pages/Auth";
+import AdminShipments from "@/pages/AdminShipments";
 import { Toaster } from "@/components/ui/toaster";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -21,6 +23,9 @@ function App() {
         <Route path="/terms-of-service" element={<TermsOfService />} />
         <Route path="/frequently-shipped-items" element={<FrequentlyShippedItems />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+        <Route path="/track" element={<Track />} />
+        <Route path="/auth" element={<Auth />} />
+        <Route path="/admin/shipments" element={<AdminShipments />} />
       </Routes>
       <WhatsAppButton />
       <Toaster />
