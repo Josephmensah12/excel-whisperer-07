@@ -164,6 +164,7 @@ export type Database = {
           outstanding_balance_flag: boolean | null
           phone_normalized: string
           phone_raw: string
+          status: Database["public"]["Enums"]["shipment_status"] | null
           updated_at: string
           whatsapp_opt_in: boolean | null
         }
@@ -178,6 +179,7 @@ export type Database = {
           outstanding_balance_flag?: boolean | null
           phone_normalized: string
           phone_raw: string
+          status?: Database["public"]["Enums"]["shipment_status"] | null
           updated_at?: string
           whatsapp_opt_in?: boolean | null
         }
@@ -192,6 +194,7 @@ export type Database = {
           outstanding_balance_flag?: boolean | null
           phone_normalized?: string
           phone_raw?: string
+          status?: Database["public"]["Enums"]["shipment_status"] | null
           updated_at?: string
           whatsapp_opt_in?: boolean | null
         }
