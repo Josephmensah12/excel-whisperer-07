@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { supabase } from "@/integrations/supabase/client";
+import type { Database } from "@/integrations/supabase/types";
 import { useAuth } from "@/hooks/useAuth";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -177,7 +178,13 @@ export default function AdminShipments() {
           replaced++;
         }
 
-        // Create new shipment
+        // Determine the initial status from Excel or default to 'Received'
+        const statusValue = shipment.timeline_status as ShipmentStatus;
+        const initialStatus = (shipment.timeline_status && SHIPMENT_STATUSES.includes(statusValue)) 
+          ? statusValue 
+          : "Received";
+
+        // Create new shipment with status from Excel
         const { data: newShipment, error } = await supabase
           .from("shipments")
           .insert({
@@ -190,6 +197,7 @@ export default function AdminShipments() {
             delivery_address_flag: shipment.delivery_address_flag,
             outstanding_balance_flag: shipment.outstanding_balance_flag,
             whatsapp_opt_in: shipment.whatsapp_opt_in,
+            status: initialStatus,
           })
           .select("id")
           .single();
@@ -203,7 +211,6 @@ export default function AdminShipments() {
 
         // Add initial timeline event
         if (shipment.timeline_status && shipment.timeline_date && newShipment) {
-          const statusValue = shipment.timeline_status as ShipmentStatus;
           if (SHIPMENT_STATUSES.includes(statusValue)) {
             await supabase.from("shipment_events").insert({
               shipment_id: newShipment.id,
@@ -272,6 +279,7 @@ export default function AdminShipments() {
 
     setAddingEvent(true);
     try {
+      // Insert event
       const { error } = await supabase.from("shipment_events").insert({
         shipment_id: selectedShipment.id,
         status: newEventStatus,
@@ -282,10 +290,17 @@ export default function AdminShipments() {
 
       if (error) throw error;
 
+      // Update shipment's status column to match latest event
+      await supabase
+        .from("shipments")
+        .update({ status: newEventStatus as Database["public"]["Enums"]["shipment_status"] })
+        .eq("id", selectedShipment.id);
+
       toast({ title: "Event Added", description: `Added ${newEventStatus} event` });
       setNewEventDate("");
       setNewEventNotes("");
       fetchShipmentDetails(selectedShipment);
+      fetchShipments(); // Refresh list to show updated status
 
       // Queue WhatsApp notification if opted in
       const shipmentData = shipments.find(s => s.id === selectedShipment.id);
