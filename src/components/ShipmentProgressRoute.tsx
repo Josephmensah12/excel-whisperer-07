@@ -6,13 +6,24 @@ import { cn } from "@/lib/utils";
 const ROUTE_STEPS = [
   { status: "Received", label: "Received" },
   { status: "Processing", label: "Processing" },
-  { status: "Shipped from USA", label: "USA" },
-  { status: "In Transit", label: "Transit" },
-  { status: "Arrived Ghana", label: "Ghana" },
-  { status: "Clearing from port", label: "Port" },
-  { status: "Delivery scheduling", label: "Schedule" },
+  { status: "Shipped from USA", label: "Left USA" },
+  { status: "In Transit", label: "In Transit" },
+  { status: "Arrived Ghana", label: "Ghana Port Processing" },
+  { status: "Delivery scheduling", label: "Scheduling" },
   { status: "Delivered", label: "Delivered" },
 ] as const;
+
+// Map database statuses to step indices (Clearing from port maps to same step as Arrived Ghana)
+const STATUS_TO_STEP_INDEX: Record<string, number> = {
+  "Received": 0,
+  "Processing": 1,
+  "Shipped from USA": 2,
+  "In Transit": 3,
+  "Arrived Ghana": 4,
+  "Clearing from port": 4, // Maps to same step as Arrived Ghana
+  "Delivery scheduling": 5,
+  "Delivered": 6,
+};
 
 type RouteStatus = typeof ROUTE_STEPS[number]["status"];
 
@@ -30,15 +41,13 @@ export default function ShipmentProgressRoute({ currentStatus, className }: Ship
   const isHold = currentStatus === "Hold";
   const isCancelled = currentStatus === "Cancelled";
 
-  // Find the current step index
+  // Find the current step index using the mapping
   const getCurrentStepIndex = () => {
     if (isCancelled) return -1;
-    
-    const index = ROUTE_STEPS.findIndex((step) => step.status === currentStatus);
-    // If Hold or unknown status, find the last known step from events
-    // For now, if Hold, we'll return -1 to indicate we need the last completed step
     if (isHold) return -1;
-    return index >= 0 ? index : 0;
+    
+    const index = STATUS_TO_STEP_INDEX[currentStatus];
+    return index !== undefined ? index : 0;
   };
 
   const currentStepIndex = getCurrentStepIndex();
@@ -140,7 +149,7 @@ export default function ShipmentProgressRoute({ currentStatus, className }: Ship
               const showTruck = animatedStep === index && !isCancelled;
 
               return (
-                <div key={step.status} className="flex flex-col items-center" style={{ width: "12.5%" }}>
+                <div key={step.status} className="flex flex-col items-center" style={{ width: `${100 / ROUTE_STEPS.length}%` }}>
                   {/* Step Node */}
                   <div className="relative">
                     {/* Truck Icon */}
