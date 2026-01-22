@@ -8,6 +8,7 @@ import { Badge } from "@/components/ui/badge";
 import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, Camera } from "lucide-react";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
+import ShipmentProgressRoute from "@/components/ShipmentProgressRoute";
 import { useToast } from "@/hooks/use-toast";
 
 interface ShipmentEvent {
@@ -177,6 +178,25 @@ export default function Track() {
             <>
               {shipment ? (
                 <div className="space-y-6">
+                  {/* Visual Progress Route */}
+                  <Card>
+                    <CardHeader>
+                      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+                        <CardTitle className="flex items-center gap-2">
+                          <Truck className="w-5 h-5" />
+                          Shipment Progress
+                        </CardTitle>
+                        <Badge className={`${statusStyle.color} flex items-center gap-1 px-3 py-1 text-sm`}>
+                          {statusStyle.icon}
+                          {currentStatus}
+                        </Badge>
+                      </div>
+                    </CardHeader>
+                    <CardContent>
+                      <ShipmentProgressRoute currentStatus={currentStatus} />
+                    </CardContent>
+                  </Card>
+
                   {/* Status Card */}
                   <Card>
                     <CardHeader>
@@ -192,10 +212,6 @@ export default function Track() {
                             )}
                           </CardDescription>
                         </div>
-                        <Badge className={`${statusStyle.color} flex items-center gap-1 px-3 py-1 text-sm`}>
-                          {statusStyle.icon}
-                          {currentStatus}
-                        </Badge>
                       </div>
                     </CardHeader>
                     <CardContent>
