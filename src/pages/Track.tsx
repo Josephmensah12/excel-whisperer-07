@@ -26,6 +26,7 @@ interface ShipmentPhoto {
 interface ShipmentData {
   id: string;
   invoice_number: string;
+  status: string | null;
   destination_zone_or_city: string | null;
   eta_to_ghana: string | null;
   eta_delivery: string | null;
@@ -102,7 +103,8 @@ export default function Track() {
     });
   };
 
-  const currentStatus = shipment?.events?.[0]?.status || "Unknown";
+  // Use the status from shipments table (synced with latest event), fallback to first event if needed
+  const currentStatus = shipment?.status || shipment?.events?.[0]?.status || "Received";
   const statusStyle = statusConfig[currentStatus] || { color: "bg-gray-100 text-gray-800", icon: <Package className="w-4 h-4" /> };
 
   return (
