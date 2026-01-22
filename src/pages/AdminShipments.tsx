@@ -62,7 +62,7 @@ export default function AdminShipments() {
   const [mapping, setMapping] = useState<ColumnMapping>({});
   const [showMappingDialog, setShowMappingDialog] = useState(false);
   const [parsedData, setParsedData] = useState<ParsedShipment[]>([]);
-  const [importResult, setImportResult] = useState<{ created: number; updated: number; events: number; errors: number } | null>(null);
+  const [importResult, setImportResult] = useState<{ created: number; replaced: number; events: number; errors: number } | null>(null);
 
   // Selected shipment for details
   const [selectedShipment, setSelectedShipment] = useState<Shipment | null>(null);
@@ -141,11 +141,11 @@ export default function AdminShipments() {
       setParsedData(result.shipments);
 
       let created = 0;
-      let updated = 0;
+      let replaced = 0;
       let eventsAdded = 0;
 
       for (const shipment of result.shipments) {
-        // Upsert shipment
+        // Check for existing shipment with same invoice number
         const { data: existingShipment } = await supabase
           .from("shipments")
           .select("id")
@@ -153,100 +153,80 @@ export default function AdminShipments() {
           .maybeSingle();
 
         if (existingShipment) {
-          // Update existing shipment (don't overwrite timeline)
+          // Delete existing shipment and all related data (events, photos, notifications)
+          await supabase
+            .from("shipment_events")
+            .delete()
+            .eq("shipment_id", existingShipment.id);
+          
+          await supabase
+            .from("shipment_photos")
+            .delete()
+            .eq("shipment_id", existingShipment.id);
+          
+          await supabase
+            .from("notification_queue")
+            .delete()
+            .eq("shipment_id", existingShipment.id);
+          
           await supabase
             .from("shipments")
-            .update({
-              phone_raw: shipment.phone_raw,
-              phone_normalized: shipment.phone_normalized,
-              destination_zone_or_city: shipment.destination_zone_or_city,
-              eta_to_ghana: shipment.eta_to_ghana,
-              eta_delivery: shipment.eta_delivery,
-              delivery_address_flag: shipment.delivery_address_flag,
-              outstanding_balance_flag: shipment.outstanding_balance_flag,
-              whatsapp_opt_in: shipment.whatsapp_opt_in,
-            })
+            .delete()
             .eq("id", existingShipment.id);
 
-          updated++;
+          replaced++;
+        }
 
-          // Add timeline event if status is provided
-          if (shipment.timeline_status && shipment.timeline_date) {
-            const statusValue = shipment.timeline_status as ShipmentStatus;
-            if (SHIPMENT_STATUSES.includes(statusValue)) {
-              // Check if event already exists
-              const { data: existingEvent } = await supabase
-                .from("shipment_events")
-                .select("id")
-                .eq("shipment_id", existingShipment.id)
-                .eq("status", statusValue)
-                .eq("event_date", shipment.timeline_date)
-                .maybeSingle();
+        // Create new shipment
+        const { data: newShipment, error } = await supabase
+          .from("shipments")
+          .insert({
+            invoice_number: shipment.invoice_number,
+            phone_raw: shipment.phone_raw,
+            phone_normalized: shipment.phone_normalized,
+            destination_zone_or_city: shipment.destination_zone_or_city,
+            eta_to_ghana: shipment.eta_to_ghana,
+            eta_delivery: shipment.eta_delivery,
+            delivery_address_flag: shipment.delivery_address_flag,
+            outstanding_balance_flag: shipment.outstanding_balance_flag,
+            whatsapp_opt_in: shipment.whatsapp_opt_in,
+          })
+          .select("id")
+          .single();
 
-              if (!existingEvent) {
-                await supabase.from("shipment_events").insert({
-                  shipment_id: existingShipment.id,
-                  status: statusValue,
-                  event_date: shipment.timeline_date,
-                  notes: shipment.timeline_notes,
-                  created_by: user?.id,
-                });
-                eventsAdded++;
-              }
-            }
-          }
-        } else {
-          // Create new shipment
-          const { data: newShipment, error } = await supabase
-            .from("shipments")
-            .insert({
-              invoice_number: shipment.invoice_number,
-              phone_raw: shipment.phone_raw,
-              phone_normalized: shipment.phone_normalized,
-              destination_zone_or_city: shipment.destination_zone_or_city,
-              eta_to_ghana: shipment.eta_to_ghana,
-              eta_delivery: shipment.eta_delivery,
-              delivery_address_flag: shipment.delivery_address_flag,
-              outstanding_balance_flag: shipment.outstanding_balance_flag,
-              whatsapp_opt_in: shipment.whatsapp_opt_in,
-            })
-            .select("id")
-            .single();
+        if (error) {
+          console.error("Error creating shipment:", error);
+          continue;
+        }
 
-          if (error) {
-            console.error("Error creating shipment:", error);
-            continue;
-          }
+        created++;
 
-          created++;
-
-          // Add initial timeline event
-          if (shipment.timeline_status && shipment.timeline_date && newShipment) {
-            const statusValue = shipment.timeline_status as ShipmentStatus;
-            if (SHIPMENT_STATUSES.includes(statusValue)) {
-              await supabase.from("shipment_events").insert({
-                shipment_id: newShipment.id,
-                status: statusValue,
-                event_date: shipment.timeline_date,
-                notes: shipment.timeline_notes,
-                created_by: user?.id,
-              });
-              eventsAdded++;
-            }
+        // Add initial timeline event
+        if (shipment.timeline_status && shipment.timeline_date && newShipment) {
+          const statusValue = shipment.timeline_status as ShipmentStatus;
+          if (SHIPMENT_STATUSES.includes(statusValue)) {
+            await supabase.from("shipment_events").insert({
+              shipment_id: newShipment.id,
+              status: statusValue,
+              event_date: shipment.timeline_date,
+              notes: shipment.timeline_notes,
+              created_by: user?.id,
+            });
+            eventsAdded++;
           }
         }
       }
 
       setImportResult({
         created,
-        updated,
+        replaced,
         events: eventsAdded,
         errors: result.errors.length,
       });
 
       toast({
         title: "Import Complete",
-        description: `Created: ${created}, Updated: ${updated}, Events: ${eventsAdded}`,
+        description: `New: ${created - replaced}, Replaced: ${replaced}, Events: ${eventsAdded}`,
       });
 
       setShowMappingDialog(false);
@@ -527,12 +507,12 @@ export default function AdminShipments() {
                         <h4 className="font-semibold mb-2">Last Import Summary</h4>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
                           <div>
-                            <p className="text-muted-foreground">Created</p>
-                            <p className="font-semibold text-green-600">{importResult.created}</p>
+                            <p className="text-muted-foreground">New</p>
+                            <p className="font-semibold text-green-600">{importResult.created - importResult.replaced}</p>
                           </div>
                           <div>
-                            <p className="text-muted-foreground">Updated</p>
-                            <p className="font-semibold text-blue-600">{importResult.updated}</p>
+                            <p className="text-muted-foreground">Replaced</p>
+                            <p className="font-semibold text-blue-600">{importResult.replaced}</p>
                           </div>
                           <div>
                             <p className="text-muted-foreground">Events Added</p>
