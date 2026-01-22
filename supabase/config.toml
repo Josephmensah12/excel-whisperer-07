@@ -1,7 +1,1 @@
-project_id = "miybwidaqwwhqvnotqkr"
-
-[functions.notify-new-request]
-verify_jwt = false
-
-[functions.database-webhook-handler]
-verify_jwt = false
+project_id = "tbcesvlydekjafqhywdz"
