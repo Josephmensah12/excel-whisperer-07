@@ -731,16 +731,16 @@ export default function AdminShipments() {
                   <div key={key} className="grid grid-cols-2 gap-4 items-center">
                     <Label>{label}</Label>
                     <Select
-                      value={mapping[key as keyof ColumnMapping] || ""}
+                      value={mapping[key as keyof ColumnMapping] || "__none__"}
                       onValueChange={(val) =>
-                        setMapping((prev) => ({ ...prev, [key]: val || undefined }))
+                        setMapping((prev) => ({ ...prev, [key]: val === "__none__" ? undefined : val }))
                       }
                     >
                       <SelectTrigger>
                         <SelectValue placeholder="Select column" />
                       </SelectTrigger>
                       <SelectContent>
-                        <SelectItem value="">-- Not mapped --</SelectItem>
+                        <SelectItem value="__none__">-- Not mapped --</SelectItem>
                         {headers.map((header) => (
                           <SelectItem key={header} value={header}>
                             {header}
