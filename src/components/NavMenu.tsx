@@ -1,12 +1,14 @@
 
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { Package, Menu, X } from "lucide-react";
+import { Package, Menu, X, Shield } from "lucide-react";
 import { useIsMobile } from "@/hooks/use-mobile";
+import { useAuth } from "@/hooks/useAuth";
 
 const NavMenu = () => {
   const [isOpen, setIsOpen] = useState(false);
   const isMobile = useIsMobile();
+  const { isAdmin, isStaff } = useAuth();
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -59,6 +61,15 @@ const NavMenu = () => {
             >
               Request a Quote
             </Link>
+            {(isAdmin || isStaff) && (
+              <Link
+                to="/admin/shipments"
+                className="px-3 py-2 rounded-md text-sm font-medium text-orange-600 hover:text-orange-800 hover:bg-orange-50 flex items-center gap-1"
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
           </div>
 
           {/* Mobile menu button */}
@@ -120,6 +131,16 @@ const NavMenu = () => {
             >
               Request a Quote
             </Link>
+            {(isAdmin || isStaff) && (
+              <Link
+                to="/admin/shipments"
+                className="block px-3 py-2 rounded-md text-base font-medium text-orange-600 hover:text-orange-800 hover:bg-orange-50 flex items-center gap-1"
+                onClick={closeMenu}
+              >
+                <Shield className="h-4 w-4" />
+                Admin
+              </Link>
+            )}
           </div>
         </div>
       )}
