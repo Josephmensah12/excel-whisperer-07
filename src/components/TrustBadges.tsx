@@ -1,15 +1,8 @@
 
 import React from 'react';
-import { Shield, Package, CheckCircle, Truck, Clock, Award } from "lucide-react";
+import { Package, CheckCircle, Truck, Clock, Award } from "lucide-react";
 
 const badges = [
-  {
-    icon: Shield,
-    title: "Fully Insured",
-    description: "Comprehensive cargo insurance protects your valuable shipments throughout transit",
-    stat: "100%",
-    statLabel: "Coverage"
-  },
   {
     icon: Package,
     title: "Proven Track Record",

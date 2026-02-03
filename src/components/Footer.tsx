@@ -18,7 +18,7 @@ const Footer = () => {
             />
             <p className="text-primary-foreground/70 text-sm leading-relaxed mb-4">
               Your trusted partner for reliable door-to-door shipping from the USA to Ghana. 
-              Licensed, insured, and committed to excellence.
+              Licensed and committed to excellence.
             </p>
             <div className="flex items-center gap-2 text-accent text-sm font-medium">
               <Clock className="h-4 w-4" />
