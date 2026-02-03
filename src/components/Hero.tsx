@@ -37,6 +37,7 @@ const Hero = () => {
 
           {/* Main Headline */}
           <div className="text-center max-w-4xl mx-auto">
+            <p className="text-accent font-semibold tracking-wide uppercase text-sm md:text-base mb-4">Peace of Mind Shipping to Ghana</p>
             <h1 className="text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-primary-foreground mb-6 leading-tight text-balance">
               Premium Door-to-Door Shipping
               <span className="block mt-2 gold-text">From USA to Ghana</span>
