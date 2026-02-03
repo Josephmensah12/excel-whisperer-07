@@ -1,40 +1,94 @@
 
 import React from 'react';
-import { Shield, Package, Check } from "lucide-react";
+import { Shield, Package, CheckCircle, Truck, Clock, Award } from "lucide-react";
+
+const badges = [
+  {
+    icon: Shield,
+    title: "Fully Insured",
+    description: "Comprehensive cargo insurance protects your valuable shipments throughout transit",
+    stat: "100%",
+    statLabel: "Coverage"
+  },
+  {
+    icon: Package,
+    title: "Proven Track Record",
+    description: "Years of reliable service delivering to families across Ghana",
+    stat: "5,000+",
+    statLabel: "Deliveries"
+  },
+  {
+    icon: CheckCircle,
+    title: "Customs Compliant",
+    description: "Licensed and compliant with all Ghana Revenue Authority requirements",
+    stat: "100%",
+    statLabel: "Clearance Rate"
+  },
+  {
+    icon: Truck,
+    title: "Door-to-Door",
+    description: "Complete service from your doorstep in the USA to any location in Ghana",
+    stat: "16",
+    statLabel: "Regions Covered"
+  },
+  {
+    icon: Clock,
+    title: "Reliable Timing",
+    description: "Consistent shipping schedules with real-time tracking updates",
+    stat: "4-6",
+    statLabel: "Weeks Transit"
+  },
+  {
+    icon: Award,
+    title: "Expert Team",
+    description: "Experienced logistics professionals handling your cargo with care",
+    stat: "10+",
+    statLabel: "Years Experience"
+  }
+];
 
 const TrustBadges = () => {
   return (
-    <section className="bg-gray-100 py-8 border-t border-b border-gray-200">
+    <section className="py-16 bg-primary">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-center">
-          
-          {/* Badge 1: Fully Insured Shipments */}
-          <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-            <div className="inline-flex h-14 w-14 rounded-full bg-blue-100 p-3 mb-4">
-              <Shield className="h-8 w-8 text-blue-600" aria-hidden="true" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Fully Insured Shipments</h3>
-            <p className="text-sm text-gray-600">Your valuable items are protected throughout transit</p>
-          </div>
-          
-          {/* Badge 2: Over 5,000 Deliveries */}
-          <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-            <div className="inline-flex h-14 w-14 rounded-full bg-green-100 p-3 mb-4">
-              <Package className="h-8 w-8 text-green-600" aria-hidden="true" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">Over 5,000 Deliveries Completed</h3>
-            <p className="text-sm text-gray-600">Years of experience serving the Ghanaian community</p>
-          </div>
-          
-          {/* Badge 3: Customs Compliant */}
-          <div className="flex flex-col items-center p-4 bg-white rounded-lg shadow-sm hover:shadow-md transition-shadow">
-            <div className="inline-flex h-14 w-14 rounded-full bg-purple-100 p-3 mb-4">
-              <Check className="h-8 w-8 text-purple-600" aria-hidden="true" />
-            </div>
-            <h3 className="text-lg font-semibold mb-2">100% Ghana Customs Compliant</h3>
-            <p className="text-sm text-gray-600">Hassle-free customs clearance for all shipments</p>
-          </div>
-          
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-primary-foreground mb-4">
+            Why Families Trust Us
+          </h2>
+          <p className="text-primary-foreground/70 text-lg max-w-2xl mx-auto">
+            Gold Coast Global Logistics has been the preferred shipping partner 
+            for the Ghanaian diaspora in the United States.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {badges.map((badge, index) => {
+            const Icon = badge.icon;
+            return (
+              <div 
+                key={index}
+                className="bg-primary-foreground/5 backdrop-blur-sm rounded-xl p-6 border border-primary-foreground/10 hover:bg-primary-foreground/10 transition-all duration-300"
+              >
+                <div className="flex items-start gap-4">
+                  <div className="h-12 w-12 rounded-lg bg-accent/20 flex items-center justify-center flex-shrink-0">
+                    <Icon className="h-6 w-6 text-accent" />
+                  </div>
+                  <div className="flex-grow">
+                    <h3 className="text-lg font-semibold text-primary-foreground mb-1">
+                      {badge.title}
+                    </h3>
+                    <p className="text-primary-foreground/70 text-sm leading-relaxed mb-3">
+                      {badge.description}
+                    </p>
+                    <div className="flex items-baseline gap-2">
+                      <span className="text-2xl font-bold text-accent">{badge.stat}</span>
+                      <span className="text-primary-foreground/60 text-sm">{badge.statLabel}</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
