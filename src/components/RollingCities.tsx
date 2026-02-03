@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react';
+import { MapPin } from 'lucide-react';
 
 const CITIES_IN_GHANA = [
   "Accra", "Kumasi", "Tamale", "Sekondi-Takoradi", "Cape Coast", 
@@ -21,14 +22,16 @@ const RollingCities = () => {
   }, []);
 
   return (
-    <div className="bg-blue-800 text-white py-1.5 overflow-hidden fixed w-full top-0 z-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center">
-        <p className="text-center text-sm md:text-base font-medium">
-          We ship to{' '}
-          <span className="inline-block min-w-[80px] text-yellow-300 font-bold">
+    <div className="bg-navy text-primary-foreground py-2 overflow-hidden fixed w-full top-0 z-50 border-b border-accent/20">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-center gap-2">
+        <MapPin className="h-4 w-4 text-accent flex-shrink-0" />
+        <p className="text-center text-sm font-medium">
+          Delivering to{' '}
+          <span className="inline-block min-w-[100px] text-accent font-bold transition-all duration-300">
             {CITIES_IN_GHANA[currentIndex]}
           </span>{' '}
-          and all other cities in Ghana
+          <span className="hidden sm:inline">& all regions across Ghana</span>
+          <span className="sm:hidden">& all of Ghana</span>
         </p>
       </div>
     </div>
