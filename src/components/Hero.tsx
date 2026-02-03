@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Phone, MapPin, Shield, Clock, Package } from "lucide-react";
+import { ArrowRight, Phone, MapPin, Clock, Package } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -43,7 +43,7 @@ const Hero = () => {
             </h1>
             
             <p className="text-lg md:text-xl text-primary-foreground/80 mb-10 max-w-2xl mx-auto">
-              Trusted by thousands of families. Licensed, insured, and fully customs-compliant shipping for your valuable cargo.
+              Trusted by thousands of families. Licensed and fully customs-compliant shipping for your valuable cargo.
             </p>
 
             {/* CTA Buttons */}
@@ -71,12 +71,8 @@ const Hero = () => {
             {/* Trust Indicators */}
             <div className="flex flex-wrap justify-center gap-6 md:gap-8 text-primary-foreground/70 text-sm">
               <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-accent" />
-                <span>Fully Insured</span>
-              </div>
-              <div className="flex items-center gap-2">
                 <Clock className="h-5 w-5 text-accent" />
-                <span>Since 2015</span>
+                <span>Since 2010</span>
               </div>
               <div className="flex items-center gap-2">
                 <Package className="h-5 w-5 text-accent" />
