@@ -13,7 +13,7 @@ import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, Di
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Loader2, Upload, Search, Package, Plus, Camera, LogOut, RefreshCw, Download, AlertTriangle } from "lucide-react";
+import { Loader2, Upload, Search, Package, Plus, Camera, LogOut, RefreshCw, Download, AlertTriangle, MessageCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
@@ -463,9 +463,18 @@ export default function AdminShipments() {
                               {shipment.phone_raw} • {shipment.destination_zone_or_city || "No destination"}
                             </p>
                           </div>
-                          <div className="flex gap-2">
-                            {shipment.whatsapp_opt_in && (
-                              <Badge variant="outline">WhatsApp</Badge>
+                          <div className="flex gap-2 items-center">
+                            {shipment.phone_raw && (
+                              <a
+                                href={`https://wa.me/${shipment.phone_raw.replace(/\D/g, '')}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                onClick={(e) => e.stopPropagation()}
+                                className="inline-flex items-center gap-1 px-2 py-1 text-xs font-medium text-green-700 bg-green-100 hover:bg-green-200 rounded-md transition-colors"
+                              >
+                                <MessageCircle className="w-3 h-3" />
+                                WhatsApp
+                              </a>
                             )}
                             {shipment.outstanding_balance_flag && (
                               <Badge variant="destructive">Balance Due</Badge>
