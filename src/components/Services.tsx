@@ -1,9 +1,16 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { Phone, Calculator, FileText, CreditCard, ArrowRight } from 'lucide-react';
+import { Phone, Calculator, FileText, CreditCard, Package, ArrowRight } from 'lucide-react';
 
 const services = [
+  {
+    to: "/track",
+    icon: Package,
+    title: "Track Your Shipment",
+    description: "Get real-time updates on your cargo's location and delivery status",
+    cta: "Track Now"
+  },
   {
     to: "/request-call",
     icon: Phone,
@@ -47,7 +54,7 @@ const Services = () => {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
         {services.map((service) => {
           const Icon = service.icon;
           return (
