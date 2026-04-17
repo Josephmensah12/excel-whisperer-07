@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, AlertTriangle, Truck, Ship, Clock, Phone, FileText, Anchor, DollarSign } from "lucide-react";
+import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, DollarSign } from "lucide-react";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import ShipmentProgressRoute from "@/components/ShipmentProgressRoute";
@@ -297,33 +297,7 @@ export default function Track() {
                     </CardHeader>
                     <CardContent>
                       {result.shipment && (
-                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-                          {result.shipment.vesselName && (
-                            <div className="bg-muted rounded-lg p-4">
-                              <p className="text-sm text-muted-foreground flex items-center gap-1">
-                                <Anchor className="w-3.5 h-3.5" /> Vessel
-                              </p>
-                              <p className="font-semibold">{result.shipment.vesselName}</p>
-                            </div>
-                          )}
-                          {result.shipment.carrier && (
-                            <div className="bg-muted rounded-lg p-4">
-                              <p className="text-sm text-muted-foreground">Carrier</p>
-                              <p className="font-semibold">{result.shipment.carrier}</p>
-                            </div>
-                          )}
-                          {result.shipment.trackingNumber && (
-                            <div className="bg-muted rounded-lg p-4">
-                              <p className="text-sm text-muted-foreground">Container / Tracking #</p>
-                              <p className="font-semibold font-mono">{result.shipment.trackingNumber}</p>
-                            </div>
-                          )}
-                          {result.shipment.voyageNumber && (
-                            <div className="bg-muted rounded-lg p-4">
-                              <p className="text-sm text-muted-foreground">Voyage</p>
-                              <p className="font-semibold">{result.shipment.voyageNumber}</p>
-                            </div>
-                          )}
+                        <div className="grid md:grid-cols-2 gap-4">
                           {result.shipment.departureDate && (
                             <div className="bg-muted rounded-lg p-4">
                               <p className="text-sm text-muted-foreground">Departure</p>
@@ -370,47 +344,6 @@ export default function Track() {
                     </Card>
                   )}
 
-                  {/* Tracking Events Timeline */}
-                  {result.events.length > 0 && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle className="flex items-center gap-2">
-                          <Clock className="w-5 h-5" />
-                          Tracking History
-                        </CardTitle>
-                      </CardHeader>
-                      <CardContent>
-                        <div className="space-y-4">
-                          {result.events.map((event, index) => (
-                            <div
-                              key={index}
-                              className={`flex gap-4 pb-4 ${index !== result.events.length - 1 ? 'border-b' : ''}`}
-                            >
-                              <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
-                                index === 0 ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
-                              }`}>
-                                <Ship className="w-4 h-4" />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                                  <p className={`font-semibold ${index === 0 ? "" : "text-muted-foreground"}`}>
-                                    {event.description || event.type}
-                                  </p>
-                                  <p className="text-sm text-muted-foreground">{formatDateTime(event.date)}</p>
-                                </div>
-                                {event.location && (
-                                  <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
-                                    <MapPin className="w-3.5 h-3.5" />
-                                    {event.location}
-                                  </p>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
                 </div>
               ) : (
                 <Card className="border-destructive">
