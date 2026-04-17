@@ -1,65 +1,89 @@
 import { useState } from "react";
-import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, Camera } from "lucide-react";
+import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, Anchor } from "lucide-react";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import ShipmentProgressRoute from "@/components/ShipmentProgressRoute";
 import { useToast } from "@/hooks/use-toast";
 
-interface ShipmentEvent {
-  id: string;
+const GCGL_API = "https://gcgl-admin-backend-production.up.railway.app";
+
+/* ── Types matching the GCGL admin public tracking API response ── */
+
+interface TrackingEvent {
+  type: string;
+  date: string;
+  location: string | null;
+  vessel: string | null;
+  voyage: string | null;
+  description: string | null;
+}
+
+interface ShipmentInfo {
+  name: string;
   status: string;
-  event_date: string;
-  notes: string | null;
+  carrier: string | null;
+  trackingNumber: string | null;
+  vesselName: string | null;
+  voyageNumber: string | null;
+  eta: string | null;
+  departureDate: string | null;
 }
 
-interface ShipmentPhoto {
-  id: string;
-  photo_url: string;
+interface TrackingResult {
+  invoiceNumber: number;
+  customerName: string;
+  recipientName: string;
+  recipientCity: string | null;
+  status: string;
+  createdAt: string;
+  itemCount: number;
+  items: { name: string; quantity: number }[];
+  shipment: ShipmentInfo | null;
+  events: TrackingEvent[];
 }
 
-interface ShipmentData {
-  id: string;
-  invoice_number: string;
-  status: string | null;
-  destination_zone_or_city: string | null;
-  eta_to_ghana: string | null;
-  eta_delivery: string | null;
-  delivery_address_flag: boolean;
-  outstanding_balance_flag: boolean;
-  events: ShipmentEvent[];
-  photos: ShipmentPhoto[];
+/* ── Map GCGL admin shipment statuses → website's 7-step progress labels ── */
+
+function mapToWebsiteStatus(shipment: ShipmentInfo | null, invoiceStatus: string): string {
+  const status = (shipment?.status || invoiceStatus || "").toLowerCase();
+  switch (status) {
+    case "collecting":  return "Received";
+    case "ready":       return "Processing";
+    case "shipped":     return "Shipped from USA";
+    case "transit":     return "In Transit";
+    case "customs":     return "Arrived Ghana";
+    case "delivered":   return "Delivered";
+    default:            return "Received";
+  }
 }
 
 const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
-  "Received": { color: "bg-blue-100 text-blue-800", icon: <Package className="w-4 h-4" /> },
-  "Processing": { color: "bg-yellow-100 text-yellow-800", icon: <Clock className="w-4 h-4" /> },
-  "Shipped from USA": { color: "bg-purple-100 text-purple-800", icon: <Ship className="w-4 h-4" /> },
-  "In Transit": { color: "bg-indigo-100 text-indigo-800", icon: <Truck className="w-4 h-4" /> },
-  "Arrived Ghana": { color: "bg-green-100 text-green-800", icon: <MapPin className="w-4 h-4" /> },
+  "Received":           { color: "bg-blue-100 text-blue-800",    icon: <Package className="w-4 h-4" /> },
+  "Processing":         { color: "bg-yellow-100 text-yellow-800", icon: <Clock className="w-4 h-4" /> },
+  "Shipped from USA":   { color: "bg-purple-100 text-purple-800", icon: <Ship className="w-4 h-4" /> },
+  "In Transit":         { color: "bg-indigo-100 text-indigo-800", icon: <Truck className="w-4 h-4" /> },
+  "Arrived Ghana":      { color: "bg-green-100 text-green-800",  icon: <MapPin className="w-4 h-4" /> },
   "Clearing from port": { color: "bg-orange-100 text-orange-800", icon: <Clock className="w-4 h-4" /> },
-  "Delivery scheduling": { color: "bg-cyan-100 text-cyan-800", icon: <Calendar className="w-4 h-4" /> },
-  "Delivered": { color: "bg-emerald-100 text-emerald-800", icon: <CheckCircle className="w-4 h-4" /> },
-  "Hold": { color: "bg-red-100 text-red-800", icon: <AlertCircle className="w-4 h-4" /> },
-  "Cancelled": { color: "bg-gray-100 text-gray-800", icon: <AlertCircle className="w-4 h-4" /> },
+  "Delivery scheduling":{ color: "bg-cyan-100 text-cyan-800",    icon: <Calendar className="w-4 h-4" /> },
+  "Delivered":          { color: "bg-emerald-100 text-emerald-800", icon: <CheckCircle className="w-4 h-4" /> },
 };
 
 export default function Track() {
   const [invoiceNumber, setInvoiceNumber] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [loading, setLoading] = useState(false);
-  const [shipment, setShipment] = useState<ShipmentData | null>(null);
+  const [result, setResult] = useState<TrackingResult | null>(null);
   const [searched, setSearched] = useState(false);
   const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!invoiceNumber.trim() || !phoneNumber.trim()) {
       toast({
         title: "Missing Information",
@@ -71,24 +95,26 @@ export default function Track() {
 
     setLoading(true);
     setSearched(true);
-    
-    try {
-      const { data, error } = await supabase.rpc('lookup_shipment', {
-        p_invoice_number: invoiceNumber.trim(),
-        p_phone_number: phoneNumber.trim()
-      });
 
-      if (error) throw error;
-      
-      setShipment(data as unknown as ShipmentData | null);
+    try {
+      const res = await fetch(
+        `${GCGL_API}/api/public/track?invoice=${encodeURIComponent(invoiceNumber.trim())}&phone=${encodeURIComponent(phoneNumber.trim())}`
+      );
+      const json = await res.json();
+
+      if (!json.success) {
+        setResult(null);
+        return;
+      }
+      setResult(json.data);
     } catch (error) {
-      console.error("Lookup error:", error);
+      console.error("Tracking lookup error:", error);
       toast({
         title: "Error",
-        description: "An error occurred while looking up your shipment.",
+        description: "Unable to connect to tracking service. Please try again later.",
         variant: "destructive",
       });
-      setShipment(null);
+      setResult(null);
     } finally {
       setLoading(false);
     }
@@ -96,21 +122,38 @@ export default function Track() {
 
   const formatDate = (dateStr: string | null) => {
     if (!dateStr) return "Not available";
-    return new Date(dateStr).toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "numeric"
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return "Not available";
+    return d.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" });
+  };
+
+  const formatDateTime = (dateStr: string) => {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return dateStr;
+    return d.toLocaleDateString("en-US", {
+      month: "short", day: "numeric", year: "numeric",
+      hour: "numeric", minute: "2-digit",
     });
   };
 
-  // Use the status from shipments table (synced with latest event), fallback to first event if needed
-  const currentStatus = shipment?.status || shipment?.events?.[0]?.status || "Received";
+  const etaCountdown = (eta: string | null): string | null => {
+    if (!eta) return null;
+    const target = new Date(eta);
+    if (isNaN(target.getTime())) return null;
+    const days = Math.ceil((target.getTime() - Date.now()) / (1000 * 60 * 60 * 24));
+    if (days > 1) return `${days} days away`;
+    if (days === 1) return "tomorrow";
+    if (days === 0) return "today";
+    return `${Math.abs(days)}d ago`;
+  };
+
+  const currentStatus = result ? mapToWebsiteStatus(result.shipment, result.status) : "Received";
   const statusStyle = statusConfig[currentStatus] || { color: "bg-gray-100 text-gray-800", icon: <Package className="w-4 h-4" /> };
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
       <NavMenu />
-      
+
       <main className="flex-1 pt-24 pb-12">
         <div className="container mx-auto px-4 max-w-4xl">
           <div className="text-center mb-8">
@@ -119,13 +162,6 @@ export default function Track() {
               Enter your invoice number and phone number to view your shipment status
             </p>
           </div>
-
-          <iframe
-            src="https://gcgl-admin-frontend-production.up.railway.app"
-            className="w-full mb-8"
-            style={{ height: '700px', border: 'none' }}
-            title="Track Shipment"
-          />
 
           {/* Lookup Form */}
           <Card className="mb-8">
@@ -148,7 +184,8 @@ export default function Track() {
                     </Label>
                     <Input
                       id="invoiceNumber"
-                      placeholder="e.g., INV-2024-001"
+                      placeholder="e.g., 601"
+                      inputMode="numeric"
                       value={invoiceNumber}
                       onChange={(e) => setInvoiceNumber(e.target.value)}
                       disabled={loading}
@@ -161,7 +198,7 @@ export default function Track() {
                     </Label>
                     <Input
                       id="phoneNumber"
-                      placeholder="e.g., +1 234 567 8900"
+                      placeholder="e.g., 346-702-8488"
                       value={phoneNumber}
                       onChange={(e) => setPhoneNumber(e.target.value)}
                       disabled={loading}
@@ -185,7 +222,7 @@ export default function Track() {
           {/* Results */}
           {searched && !loading && (
             <>
-              {shipment ? (
+              {result ? (
                 <div className="space-y-6">
                   {/* Visual Progress Route */}
                   <Card>
@@ -206,108 +243,139 @@ export default function Track() {
                     </CardContent>
                   </Card>
 
-                  {/* Status Card */}
+                  {/* Invoice & Shipment Details */}
                   <Card>
                     <CardHeader>
                       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
                         <div>
-                          <CardTitle className="text-xl">Invoice: {shipment.invoice_number}</CardTitle>
+                          <CardTitle className="text-xl">Invoice #{result.invoiceNumber}</CardTitle>
                           <CardDescription>
-                            {shipment.destination_zone_or_city && (
-                              <span className="flex items-center gap-1 mt-1">
-                                <MapPin className="w-4 h-4" />
-                                Destination: {shipment.destination_zone_or_city}
-                              </span>
-                            )}
+                            <span className="block mt-1">
+                              From <span className="font-medium">{result.customerName}</span>
+                              {" to "}
+                              <span className="font-medium">{result.recipientName}</span>
+                              {result.recipientCity && (
+                                <span className="flex items-center gap-1 mt-0.5 inline-flex">
+                                  <MapPin className="w-3.5 h-3.5" />
+                                  {result.recipientCity}
+                                </span>
+                              )}
+                            </span>
                           </CardDescription>
                         </div>
                       </div>
                     </CardHeader>
                     <CardContent>
-                      <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-                        <div className="bg-muted rounded-lg p-4">
-                          <p className="text-sm text-muted-foreground">ETA to Ghana</p>
-                          <p className="font-semibold">{formatDate(shipment.eta_to_ghana)}</p>
+                      {result.shipment && (
+                        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+                          {result.shipment.vesselName && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground flex items-center gap-1">
+                                <Anchor className="w-3.5 h-3.5" /> Vessel
+                              </p>
+                              <p className="font-semibold">{result.shipment.vesselName}</p>
+                            </div>
+                          )}
+                          {result.shipment.carrier && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">Carrier</p>
+                              <p className="font-semibold">{result.shipment.carrier}</p>
+                            </div>
+                          )}
+                          {result.shipment.trackingNumber && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">Container / Tracking #</p>
+                              <p className="font-semibold font-mono">{result.shipment.trackingNumber}</p>
+                            </div>
+                          )}
+                          {result.shipment.voyageNumber && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">Voyage</p>
+                              <p className="font-semibold">{result.shipment.voyageNumber}</p>
+                            </div>
+                          )}
+                          {result.shipment.departureDate && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">Departure</p>
+                              <p className="font-semibold">{formatDate(result.shipment.departureDate)}</p>
+                            </div>
+                          )}
+                          {result.shipment.eta && (
+                            <div className="bg-muted rounded-lg p-4">
+                              <p className="text-sm text-muted-foreground">ETA</p>
+                              <p className="font-semibold">
+                                {formatDate(result.shipment.eta)}
+                                {etaCountdown(result.shipment.eta) && (
+                                  <span className="ml-2 text-primary text-xs font-normal">
+                                    ({etaCountdown(result.shipment.eta)})
+                                  </span>
+                                )}
+                              </p>
+                            </div>
+                          )}
                         </div>
-                        <div className="bg-muted rounded-lg p-4">
-                          <p className="text-sm text-muted-foreground">ETA Delivery</p>
-                          <p className="font-semibold">{formatDate(shipment.eta_delivery)}</p>
-                        </div>
-                        <div className="bg-muted rounded-lg p-4">
-                          <p className="text-sm text-muted-foreground">Delivery Address</p>
-                          <p className="font-semibold">{shipment.delivery_address_flag ? "Yes" : "No"}</p>
-                        </div>
-                        <div className="bg-muted rounded-lg p-4">
-                          <p className="text-sm text-muted-foreground">Outstanding Balance</p>
-                          <p className="font-semibold">{shipment.outstanding_balance_flag ? "Yes" : "No"}</p>
-                        </div>
-                      </div>
+                      )}
                     </CardContent>
                   </Card>
 
-                  {/* Timeline */}
-                  {shipment.events && shipment.events.length > 0 && (
+                  {/* Items List */}
+                  {result.items.length > 0 && (
                     <Card>
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <Clock className="w-5 h-5" />
-                          Tracking Timeline
+                          <Package className="w-5 h-5" />
+                          Items ({result.itemCount})
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="space-y-4">
-                          {shipment.events.map((event, index) => {
-                            const eventStyle = statusConfig[event.status] || { color: "bg-gray-100 text-gray-800", icon: <Package className="w-4 h-4" /> };
-                            return (
-                              <div 
-                                key={event.id} 
-                                className={`flex gap-4 pb-4 ${index !== shipment.events.length - 1 ? 'border-b' : ''}`}
-                              >
-                                <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${eventStyle.color}`}>
-                                  {eventStyle.icon}
-                                </div>
-                                <div className="flex-1">
-                                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
-                                    <p className="font-semibold">{event.status}</p>
-                                    <p className="text-sm text-muted-foreground">{formatDate(event.event_date)}</p>
-                                  </div>
-                                  {event.notes && (
-                                    <p className="text-sm text-muted-foreground mt-1">{event.notes}</p>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })}
+                        <div className="divide-y">
+                          {result.items.map((item, i) => (
+                            <div key={i} className="flex items-center justify-between py-3 text-sm">
+                              <span>{item.name}</span>
+                              <span className="text-muted-foreground font-medium">x{item.quantity}</span>
+                            </div>
+                          ))}
                         </div>
                       </CardContent>
                     </Card>
                   )}
 
-                  {/* Delivery Photos */}
-                  {shipment.photos && shipment.photos.length > 0 && (
+                  {/* Tracking Events Timeline */}
+                  {result.events.length > 0 && (
                     <Card>
                       <CardHeader>
                         <CardTitle className="flex items-center gap-2">
-                          <Camera className="w-5 h-5" />
-                          Proof of Delivery
+                          <Clock className="w-5 h-5" />
+                          Tracking History
                         </CardTitle>
                       </CardHeader>
                       <CardContent>
-                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                          {shipment.photos.map((photo) => (
-                            <a 
-                              key={photo.id} 
-                              href={photo.photo_url} 
-                              target="_blank" 
-                              rel="noopener noreferrer"
-                              className="block overflow-hidden rounded-lg border hover:shadow-lg transition-shadow"
+                        <div className="space-y-4">
+                          {result.events.map((event, index) => (
+                            <div
+                              key={index}
+                              className={`flex gap-4 pb-4 ${index !== result.events.length - 1 ? 'border-b' : ''}`}
                             >
-                              <img 
-                                src={photo.photo_url} 
-                                alt="Proof of delivery" 
-                                className="w-full h-40 object-cover"
-                              />
-                            </a>
+                              <div className={`flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center ${
+                                index === 0 ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground"
+                              }`}>
+                                <Ship className="w-4 h-4" />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-1">
+                                  <p className={`font-semibold ${index === 0 ? "" : "text-muted-foreground"}`}>
+                                    {event.description || event.type}
+                                  </p>
+                                  <p className="text-sm text-muted-foreground">{formatDateTime(event.date)}</p>
+                                </div>
+                                {event.location && (
+                                  <p className="text-sm text-muted-foreground mt-1 flex items-center gap-1">
+                                    <MapPin className="w-3.5 h-3.5" />
+                                    {event.location}
+                                  </p>
+                                )}
+                              </div>
+                            </div>
                           ))}
                         </div>
                       </CardContent>
@@ -331,7 +399,7 @@ export default function Track() {
           )}
         </div>
       </main>
-      
+
       <Footer />
     </div>
   );
