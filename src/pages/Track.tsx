@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, Anchor } from "lucide-react";
+import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, AlertTriangle, Truck, Ship, Clock, Phone, FileText, Anchor, DollarSign } from "lucide-react";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import ShipmentProgressRoute from "@/components/ShipmentProgressRoute";
@@ -43,6 +43,8 @@ interface TrackingResult {
   createdAt: string;
   itemCount: number;
   items: { name: string; quantity: number }[];
+  outstandingBalance: number;
+  paymentStatus: string;
   shipment: ShipmentInfo | null;
   events: TrackingEvent[];
 }
@@ -244,6 +246,32 @@ export default function Track() {
                       <ShipmentProgressRoute currentStatus={currentStatus} />
                     </CardContent>
                   </Card>
+
+                  {/* Outstanding Balance Warning */}
+                  {result.outstandingBalance > 0 && (
+                    <Card className="border-amber-300 bg-amber-50">
+                      <CardContent className="pt-6">
+                        <div className="flex items-start gap-3">
+                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                            <DollarSign className="w-5 h-5 text-amber-700" />
+                          </div>
+                          <div className="flex-1">
+                            <h3 className="font-semibold text-amber-900">Outstanding Balance: ${result.outstandingBalance.toFixed(2)}</h3>
+                            <p className="text-sm text-amber-800 mt-1">
+                              Please make payment as soon as possible to avoid any delays in delivery.
+                              Contact us at{" "}
+                              <a href="tel:+18322959347" className="underline font-medium">(832) 295-9347</a>
+                              {" "}or{" "}
+                              <a href="https://wa.me/17138261087" target="_blank" rel="noopener noreferrer" className="underline font-medium">
+                                WhatsApp (713) 826-1087
+                              </a>
+                              {" "}to arrange payment.
+                            </p>
+                          </div>
+                        </div>
+                      </CardContent>
+                    </Card>
+                  )}
 
                   {/* Invoice & Shipment Details */}
                   <Card>
