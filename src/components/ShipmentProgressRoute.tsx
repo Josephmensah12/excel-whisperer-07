@@ -10,7 +10,8 @@ const ROUTE_STEPS = [
   { status: "In Transit", label: "In Transit" },
   { status: "Arrived Ghana", label: "Ghana Port Processing" },
   { status: "Delivery scheduling", label: "Scheduling" },
-  { status: "Delivered", label: "Delivery Ongoing" },
+  { status: "Delivery Ongoing", label: "Delivery Ongoing" },
+  { status: "Delivered", label: "Delivered" },
 ] as const;
 
 // Map database statuses to step indices (Clearing from port maps to same step as Arrived Ghana)
@@ -22,8 +23,8 @@ const STATUS_TO_STEP_INDEX: Record<string, number> = {
   "Arrived Ghana": 4,
   "Clearing from port": 4, // Maps to same step as Arrived Ghana
   "Delivery scheduling": 5,
-  "Delivered": 6,
   "Delivery Ongoing": 6,
+  "Delivered": 7,
 };
 
 type RouteStatus = typeof ROUTE_STEPS[number]["status"];

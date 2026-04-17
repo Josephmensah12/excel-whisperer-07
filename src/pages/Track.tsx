@@ -57,7 +57,8 @@ function mapToWebsiteStatus(shipment: ShipmentInfo | null, invoiceStatus: string
     case "shipped":     return "Shipped from USA";
     case "transit":     return "In Transit";
     case "customs":     return "Arrived Ghana";
-    case "delivered":   return "Delivery Ongoing";
+    case "delivery":    return "Delivery Ongoing";
+    case "delivered":   return "Delivered";
     default:            return "Received";
   }
 }
