@@ -57,7 +57,7 @@ function mapToWebsiteStatus(shipment: ShipmentInfo | null, invoiceStatus: string
     case "shipped":     return "Shipped from USA";
     case "transit":     return "In Transit";
     case "customs":     return "Arrived Ghana";
-    case "delivered":   return "Delivered";
+    case "delivered":   return "Delivery Ongoing";
     default:            return "Received";
   }
 }
@@ -71,6 +71,7 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   "Clearing from port": { color: "bg-orange-100 text-orange-800", icon: <Clock className="w-4 h-4" /> },
   "Delivery scheduling":{ color: "bg-cyan-100 text-cyan-800",    icon: <Calendar className="w-4 h-4" /> },
   "Delivered":          { color: "bg-emerald-100 text-emerald-800", icon: <CheckCircle className="w-4 h-4" /> },
+  "Delivery Ongoing":   { color: "bg-lime-100 text-lime-800",     icon: <Truck className="w-4 h-4" /> },
 };
 
 export default function Track() {
