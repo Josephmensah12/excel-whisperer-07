@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, DollarSign } from "lucide-react";
+import { Loader2, Package, MapPin, Calendar, CheckCircle, AlertCircle, Truck, Ship, Clock, Phone, FileText, DollarSign, CreditCard } from "lucide-react";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import ShipmentProgressRoute from "@/components/ShipmentProgressRoute";
@@ -76,6 +76,137 @@ const statusConfig: Record<string, { color: string; icon: React.ReactNode }> = {
   "Delivered":          { color: "bg-emerald-100 text-emerald-800", icon: <CheckCircle className="w-4 h-4" /> },
   "Delivery Ongoing":   { color: "bg-lime-100 text-lime-800",     icon: <Truck className="w-4 h-4" /> },
 };
+
+function PaymentCard({ balance, invoiceNumber, phone }: { balance: number; invoiceNumber: number; phone: string }) {
+  const [mode, setMode] = useState<"default" | "custom">("default");
+  const [customAmount, setCustomAmount] = useState("");
+  const [paying, setPaying] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const handlePay = async (amount?: number) => {
+    setPaying(true);
+    setError(null);
+    try {
+      const res = await fetch(`${GCGL_API}/api/public/pay`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          invoice: invoiceNumber,
+          phone: phone,
+          amount: amount || undefined,
+        }),
+      });
+      const json = await res.json();
+      if (!json.success) {
+        setError(json.error || "Unable to create payment link");
+        return;
+      }
+      // Redirect to Square checkout
+      window.location.href = json.data.url;
+    } catch {
+      setError("Unable to connect to payment service. Please try again.");
+    } finally {
+      setPaying(false);
+    }
+  };
+
+  const parsedAmount = parseFloat(customAmount);
+  const isValidCustom = !isNaN(parsedAmount) && parsedAmount > 0 && parsedAmount <= balance;
+
+  return (
+    <Card className="border-amber-300 bg-amber-50">
+      <CardContent className="pt-6">
+        <div className="flex items-start gap-3 mb-4">
+          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+            <DollarSign className="w-5 h-5 text-amber-700" />
+          </div>
+          <div className="flex-1">
+            <h3 className="font-semibold text-amber-900">Outstanding Balance: ${balance.toFixed(2)}</h3>
+            <p className="text-sm text-amber-800 mt-1">
+              Please make payment to avoid any delays in delivery.
+            </p>
+          </div>
+        </div>
+
+        {error && (
+          <div className="mb-3 p-3 bg-red-50 border border-red-200 text-red-700 rounded-lg text-sm">
+            {error}
+          </div>
+        )}
+
+        {mode === "default" ? (
+          <div className="space-y-3">
+            <Button
+              onClick={() => handlePay()}
+              disabled={paying}
+              className="w-full bg-[#1A1D2B] hover:bg-[#2d3142] text-white"
+            >
+              {paying ? (
+                <><Loader2 className="w-4 h-4 mr-2 animate-spin" /> Processing...</>
+              ) : (
+                <><CreditCard className="w-4 h-4 mr-2" /> Pay Full Balance — ${balance.toFixed(2)}</>
+              )}
+            </Button>
+            <button
+              type="button"
+              onClick={() => setMode("custom")}
+              className="w-full text-center text-sm text-primary underline hover:no-underline"
+            >
+              Pay a different amount
+            </button>
+          </div>
+        ) : (
+          <div className="space-y-3">
+            <div>
+              <Label htmlFor="customAmount" className="text-sm font-medium text-amber-900">
+                Enter amount (max ${balance.toFixed(2)})
+              </Label>
+              <div className="flex gap-2 mt-1">
+                <div className="relative flex-1">
+                  <span className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500">$</span>
+                  <Input
+                    id="customAmount"
+                    type="number"
+                    step="0.01"
+                    min="1"
+                    max={balance}
+                    placeholder="0.00"
+                    value={customAmount}
+                    onChange={(e) => setCustomAmount(e.target.value)}
+                    className="pl-7"
+                  />
+                </div>
+                <Button
+                  onClick={() => handlePay(parsedAmount)}
+                  disabled={paying || !isValidCustom}
+                  className="bg-[#1A1D2B] hover:bg-[#2d3142] text-white"
+                >
+                  {paying ? <Loader2 className="w-4 h-4 animate-spin" /> : "Pay"}
+                </Button>
+              </div>
+              {customAmount && !isValidCustom && (
+                <p className="text-xs text-red-600 mt-1">
+                  Enter an amount between $1.00 and ${balance.toFixed(2)}
+                </p>
+              )}
+            </div>
+            <button
+              type="button"
+              onClick={() => { setMode("default"); setCustomAmount(""); setError(null); }}
+              className="w-full text-center text-sm text-gray-500 underline hover:no-underline"
+            >
+              Pay full balance instead
+            </button>
+          </div>
+        )}
+
+        <p className="mt-3 text-xs text-amber-700 text-center">
+          Secure payment via Square. Apple Pay, Google Pay, and cards accepted.
+        </p>
+      </CardContent>
+    </Card>
+  );
+}
 
 export default function Track() {
   const [invoiceNumber, setInvoiceNumber] = useState("");
@@ -247,30 +378,13 @@ export default function Track() {
                     </CardContent>
                   </Card>
 
-                  {/* Outstanding Balance Warning */}
+                  {/* Payment Section */}
                   {result.outstandingBalance > 0 && (
-                    <Card className="border-amber-300 bg-amber-50">
-                      <CardContent className="pt-6">
-                        <div className="flex items-start gap-3">
-                          <div className="flex-shrink-0 w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
-                            <DollarSign className="w-5 h-5 text-amber-700" />
-                          </div>
-                          <div className="flex-1">
-                            <h3 className="font-semibold text-amber-900">Outstanding Balance: ${result.outstandingBalance.toFixed(2)}</h3>
-                            <p className="text-sm text-amber-800 mt-1">
-                              Please make payment as soon as possible to avoid any delays in delivery.
-                              Contact us at{" "}
-                              <a href="tel:+18322959347" className="underline font-medium">(832) 295-9347</a>
-                              {" "}or{" "}
-                              <a href="https://wa.me/17138261087" target="_blank" rel="noopener noreferrer" className="underline font-medium">
-                                WhatsApp (713) 826-1087
-                              </a>
-                              {" "}to arrange payment.
-                            </p>
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                    <PaymentCard
+                      balance={result.outstandingBalance}
+                      invoiceNumber={result.invoiceNumber}
+                      phone={phoneNumber}
+                    />
                   )}
 
                   {/* Invoice & Shipment Details */}
