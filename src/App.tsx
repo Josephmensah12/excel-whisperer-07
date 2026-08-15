@@ -25,6 +25,7 @@ function App() {
         <Route path="/frequently-shipped-items" element={<FrequentlyShippedItems />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/track" element={<Track />} />
+        <Route path="/ship-a-vehicle" element={<ShipVehicle />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/admin/shipments" element={<AdminShipments />} />
       </Routes>
