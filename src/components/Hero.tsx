@@ -2,7 +2,7 @@
 import React from 'react';
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
-import { ArrowRight, Phone, MapPin, Clock, Package } from "lucide-react";
+import { ArrowRight, Phone, MapPin, Clock, Package, Car } from "lucide-react";
 
 const Hero = () => {
   return (

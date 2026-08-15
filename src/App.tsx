@@ -9,6 +9,7 @@ import Index from "@/pages/Index";
 import Track from "@/pages/Track";
 import Auth from "@/pages/Auth";
 import AdminShipments from "@/pages/AdminShipments";
+import ShipVehicle from "@/pages/ShipVehicle";
 import { Toaster } from "@/components/ui/toaster";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
