@@ -67,6 +67,16 @@ const Hero = () => {
                   Track Your Shipment
                 </Button>
               </Link>
+              <Link to="/ship-a-vehicle">
+                <Button 
+                  size="lg" 
+                  variant="outline"
+                  className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8 py-6"
+                >
+                  <Car className="mr-2 h-5 w-5" />
+                  Ship a Vehicle
+                </Button>
+              </Link>
             </div>
 
             {/* Trust Indicators */}
