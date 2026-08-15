@@ -9,6 +9,7 @@ import Index from "@/pages/Index";
 import Track from "@/pages/Track";
 import Auth from "@/pages/Auth";
 import AdminShipments from "@/pages/AdminShipments";
+import ShipVehicle from "@/pages/ShipVehicle";
 import { Toaster } from "@/components/ui/toaster";
 import WhatsAppButton from "@/components/WhatsAppButton";
 
@@ -24,6 +25,7 @@ function App() {
         <Route path="/frequently-shipped-items" element={<FrequentlyShippedItems />} />
         <Route path="/privacy-policy" element={<PrivacyPolicy />} />
         <Route path="/track" element={<Track />} />
+        <Route path="/ship-a-vehicle" element={<ShipVehicle />} />
         <Route path="/auth" element={<Auth />} />
         <Route path="/admin/shipments" element={<AdminShipments />} />
       </Routes>
