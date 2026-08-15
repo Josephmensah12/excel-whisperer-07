@@ -4,59 +4,67 @@
 
 @layer base {
   :root {
-    /* Premium Navy & Gold Brand Palette */
-    --background: 210 20% 98%;
-    --foreground: 222 47% 11%;
+    /* Ghana Flag Palette: Red, Gold, Green */
+    --background: 40 30% 98%;
+    --foreground: 150 30% 10%;
 
     --card: 0 0% 100%;
-    --card-foreground: 222 47% 11%;
+    --card-foreground: 150 30% 10%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 222 47% 11%;
+    --popover-foreground: 150 30% 10%;
 
-    /* Navy Blue Primary */
-    --primary: 222 47% 15%;
+    /* Ghana Red Primary */
+    --primary: 355 75% 34%;
     --primary-foreground: 45 100% 96%;
 
-    /* Subtle Navy Secondary */
-    --secondary: 220 14% 96%;
-    --secondary-foreground: 222 47% 11%;
+    /* Ghana Green Secondary */
+    --secondary: 150 45% 94%;
+    --secondary-foreground: 150 60% 16%;
 
     /* Muted tones */
-    --muted: 220 14% 96%;
-    --muted-foreground: 220 9% 46%;
+    --muted: 40 20% 95%;
+    --muted-foreground: 150 8% 40%;
 
     /* Gold Accent */
     --accent: 45 93% 47%;
-    --accent-foreground: 222 47% 11%;
+    --accent-foreground: 150 40% 12%;
 
-    --destructive: 0 84% 60%;
+    --destructive: 355 75% 40%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
+    --border: 40 18% 88%;
+    --input: 40 18% 88%;
     --ring: 45 93% 47%;
 
     --radius: 0.5rem;
 
-    /* Premium Brand Colors */
+    /* Brand Colors */
     --gold: 45 93% 47%;
     --gold-light: 45 100% 60%;
     --gold-dark: 43 96% 38%;
-    --navy: 222 47% 15%;
-    --navy-light: 222 35% 25%;
-    --navy-dark: 222 55% 8%;
+    --ghana-red: 355 75% 34%;
+    --ghana-red-light: 355 65% 44%;
+    --ghana-red-dark: 355 80% 22%;
+    --ghana-green: 150 70% 20%;
+    --ghana-green-light: 150 55% 30%;
+    --ghana-green-dark: 150 80% 12%;
+    /* Legacy aliases mapped to the Ghana palette */
+    --navy: 355 75% 34%;
+    --navy-light: 150 70% 20%;
+    --navy-dark: 355 80% 20%;
 
     /* Sidebar */
-    --sidebar-background: 222 47% 11%;
+    --sidebar-background: 150 70% 12%;
     --sidebar-foreground: 45 100% 96%;
     --sidebar-primary: 45 93% 47%;
-    --sidebar-primary-foreground: 222 47% 11%;
-    --sidebar-accent: 222 35% 20%;
+    --sidebar-primary-foreground: 150 40% 12%;
+    --sidebar-accent: 150 50% 20%;
     --sidebar-accent-foreground: 45 100% 96%;
-    --sidebar-border: 222 35% 20%;
+    --sidebar-border: 150 50% 20%;
     --sidebar-ring: 45 93% 47%;
   }
+
 
   .dark {
     --background: 222 47% 6%;
