@@ -72,6 +72,16 @@ export default {
 					DEFAULT: 'hsl(var(--navy))',
 					light: 'hsl(var(--navy-light))',
 					dark: 'hsl(var(--navy-dark))'
+				},
+				'ghana-red': {
+					DEFAULT: 'hsl(var(--ghana-red))',
+					light: 'hsl(var(--ghana-red-light))',
+					dark: 'hsl(var(--ghana-red-dark))'
+				},
+				'ghana-green': {
+					DEFAULT: 'hsl(var(--ghana-green))',
+					light: 'hsl(var(--ghana-green-light))',
+					dark: 'hsl(var(--ghana-green-dark))'
 				}
 			},
 			borderRadius: {
