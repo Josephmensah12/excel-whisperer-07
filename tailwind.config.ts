@@ -72,6 +72,10 @@ export default {
 					DEFAULT: 'hsl(var(--navy))',
 					light: 'hsl(var(--navy-light))',
 					dark: 'hsl(var(--navy-dark))'
+				},
+				whatsapp: {
+					DEFAULT: 'hsl(var(--whatsapp))',
+					foreground: 'hsl(var(--whatsapp-foreground))'
 				}
 			},
 			borderRadius: {
