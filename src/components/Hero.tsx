@@ -60,8 +60,7 @@ const Hero = () => {
               <Link to="/track">
                 <Button 
                   size="lg" 
-                  variant="outline"
-                  className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8 py-6"
+                  className="bg-primary-foreground hover:bg-primary-foreground/90 text-primary font-bold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <Package className="mr-2 h-5 w-5" />
                   Track Your Shipment
@@ -70,8 +69,7 @@ const Hero = () => {
               <Link to="/ship-a-vehicle">
                 <Button 
                   size="lg" 
-                  variant="outline"
-                  className="border-2 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 font-semibold text-lg px-8 py-6"
+                  className="bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6 shadow-lg hover:shadow-xl transition-all duration-300"
                 >
                   <Car className="mr-2 h-5 w-5" />
                   Ship a Vehicle
