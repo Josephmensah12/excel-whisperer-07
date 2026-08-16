@@ -47,6 +47,10 @@
     --navy-light: 222 35% 25%;
     --navy-dark: 222 55% 8%;
 
+    /* WhatsApp Green */
+    --whatsapp: 142 70% 45%;
+    --whatsapp-foreground: 0 0% 100%;
+
     /* Sidebar */
     --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 45 100% 96%;
