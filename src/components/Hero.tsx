@@ -16,8 +16,8 @@ const Hero = () => {
           loading="eager" 
           fetchPriority="high"
         />
-        {/* Ghana Flag Overlay: Red → Gold → Green */}
-        <div className="absolute inset-0 bg-gradient-to-r from-ghana-red-dark/92 via-gold-dark/70 to-ghana-green/85"></div>
+        {/* Premium Navy Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-r from-navy-dark/90 via-navy/80 to-navy/60"></div>
       </div>
       
       {/* Content */}

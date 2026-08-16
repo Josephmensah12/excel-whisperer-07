@@ -4,107 +4,98 @@
 
 @layer base {
   :root {
-    /* Ghana Flag Palette: Red, Gold, Green */
-    --background: 40 30% 98%;
-    --foreground: 150 30% 10%;
+    /* Premium Navy & Gold Brand Palette */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
 
     --card: 0 0% 100%;
-    --card-foreground: 150 30% 10%;
+    --card-foreground: 222 47% 11%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 150 30% 10%;
+    --popover-foreground: 222 47% 11%;
 
-    /* Ghana Red Primary */
-    --primary: 355 75% 34%;
+    /* Navy Blue Primary */
+    --primary: 222 47% 15%;
     --primary-foreground: 45 100% 96%;
 
-    /* Ghana Green Secondary */
-    --secondary: 150 45% 94%;
-    --secondary-foreground: 150 60% 16%;
+    /* Subtle Navy Secondary */
+    --secondary: 220 14% 96%;
+    --secondary-foreground: 222 47% 11%;
 
     /* Muted tones */
-    --muted: 40 20% 95%;
-    --muted-foreground: 150 8% 40%;
+    --muted: 220 14% 96%;
+    --muted-foreground: 220 9% 46%;
 
     /* Gold Accent */
     --accent: 45 93% 47%;
-    --accent-foreground: 150 40% 12%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 355 75% 40%;
+    --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 40 18% 88%;
-    --input: 40 18% 88%;
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
     --ring: 45 93% 47%;
 
     --radius: 0.5rem;
 
-    /* Brand Colors */
+    /* Premium Brand Colors */
     --gold: 45 93% 47%;
     --gold-light: 45 100% 60%;
     --gold-dark: 43 96% 38%;
-    --ghana-red: 355 75% 34%;
-    --ghana-red-light: 355 65% 44%;
-    --ghana-red-dark: 355 80% 22%;
-    --ghana-green: 150 70% 20%;
-    --ghana-green-light: 150 55% 30%;
-    --ghana-green-dark: 150 80% 12%;
-    /* Legacy aliases mapped to the Ghana palette */
-    --navy: 355 75% 34%;
-    --navy-light: 150 70% 20%;
-    --navy-dark: 355 80% 20%;
+    --navy: 222 47% 15%;
+    --navy-light: 222 35% 25%;
+    --navy-dark: 222 55% 8%;
 
     /* Sidebar */
-    --sidebar-background: 150 70% 12%;
+    --sidebar-background: 222 47% 11%;
     --sidebar-foreground: 45 100% 96%;
     --sidebar-primary: 45 93% 47%;
-    --sidebar-primary-foreground: 150 40% 12%;
-    --sidebar-accent: 150 50% 20%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 35% 20%;
     --sidebar-accent-foreground: 45 100% 96%;
-    --sidebar-border: 150 50% 20%;
+    --sidebar-border: 222 35% 20%;
     --sidebar-ring: 45 93% 47%;
   }
 
-
   .dark {
-    --background: 150 40% 6%;
+    --background: 222 47% 6%;
     --foreground: 45 100% 96%;
 
-    --card: 150 35% 9%;
+    --card: 222 47% 8%;
     --card-foreground: 45 100% 96%;
 
-    --popover: 150 35% 9%;
+    --popover: 222 47% 8%;
     --popover-foreground: 45 100% 96%;
 
     --primary: 45 93% 47%;
-    --primary-foreground: 150 40% 10%;
+    --primary-foreground: 222 47% 11%;
 
-    --secondary: 150 30% 15%;
+    --secondary: 222 35% 15%;
     --secondary-foreground: 45 100% 96%;
 
-    --muted: 150 25% 15%;
-    --muted-foreground: 150 10% 65%;
+    --muted: 222 35% 15%;
+    --muted-foreground: 220 9% 60%;
 
     --accent: 45 93% 47%;
-    --accent-foreground: 150 40% 10%;
+    --accent-foreground: 222 47% 11%;
 
-    --destructive: 355 70% 38%;
+    --destructive: 0 62% 30%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 150 25% 18%;
-    --input: 150 25% 18%;
+    --border: 222 35% 18%;
+    --input: 222 35% 18%;
     --ring: 45 93% 47%;
 
-    --sidebar-background: 150 40% 6%;
+    --sidebar-background: 222 47% 6%;
     --sidebar-foreground: 45 100% 96%;
     --sidebar-primary: 45 93% 47%;
-    --sidebar-primary-foreground: 150 40% 10%;
-    --sidebar-accent: 150 30% 12%;
+    --sidebar-primary-foreground: 222 47% 11%;
+    --sidebar-accent: 222 35% 12%;
     --sidebar-accent-foreground: 45 100% 96%;
-    --sidebar-border: 150 30% 12%;
+    --sidebar-border: 222 35% 12%;
     --sidebar-ring: 45 93% 47%;
   }
-
 }
 
 @layer base {
