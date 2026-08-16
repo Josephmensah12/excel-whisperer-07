@@ -49,8 +49,7 @@ const TrustBadges = () => {
             Delivering Your Promise
           </h2>
           <p className="text-primary-foreground/70 text-lg max-w-2xl mx-auto">
-            Gold Coast Global Logistics has been the preferred shipping partner 
-            for the Ghanaian diaspora in the United States.
+            one shipment after the other
           </p>
         </div>
 
