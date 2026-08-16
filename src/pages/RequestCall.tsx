@@ -9,6 +9,7 @@ import { CallRequestFormFields } from "@/components/forms/CallRequestFormFields"
 import { CallRequestFormData, callRequestSchema } from "@/schemas/callRequestSchema";
 import Footer from "@/components/Footer";
 import NavMenu from "@/components/NavMenu";
+import { submitLead, WHATSAPP_NUMBER } from "@/lib/gcglApi";
 
 const RequestCall = () => {
   const [isSubmitting, setIsSubmitting] = React.useState(false);
@@ -28,13 +29,33 @@ const RequestCall = () => {
 
   async function onSubmit(values: CallRequestFormData) {
     setIsSubmitting(true);
-    // Simulate an API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    toast("Request submitted", {
-      description: "We will contact you shortly.",
-    });
-    form.reset();
+    try {
+      // "Other" puts the real city name in the free-text companion field.
+      const origin =
+        values.shipFromCity === "Other" && values.shipFromCityCustom
+          ? values.shipFromCityCustom
+          : values.shipFromCity;
+
+      await submitLead({
+        type: "call",
+        name: values.name,
+        email: values.email,
+        phone: values.phone,
+        origin,
+        destination: values.shipToCity,
+      });
+      toast("Request submitted", {
+        description: "We will contact you shortly.",
+      });
+      form.reset();
+    } catch (err) {
+      console.error("Call request failed:", err);
+      toast("We couldn't send your request", {
+        description: `Please try again, or reach us on WhatsApp at ${WHATSAPP_NUMBER}.`,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (

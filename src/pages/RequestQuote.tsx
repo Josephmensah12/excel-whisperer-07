@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/form";
 import Footer from "@/components/Footer";
 import NavMenu from "@/components/NavMenu";
+import { submitLead, WHATSAPP_NUMBER } from "@/lib/gcglApi";
 
 // Define the schema for the form
 const quoteFormSchema = z.object({
@@ -50,14 +51,28 @@ const RequestQuote = () => {
 
   async function onSubmit(values: QuoteFormValues) {
     setIsSubmitting(true);
-    // Simulate an API call
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    setIsSubmitting(false);
-    toast("Quote request submitted", {
-      description: "We will get back to you shortly with a quote.",
-    });
-    form.reset();
-    console.log(values);
+    try {
+      await submitLead({
+        type: "quote",
+        name: values.name,
+        email: values.email,
+        origin: values.origin,
+        destination: values.destination,
+        goodsType: values.goodsType,
+        additionalInfo: values.additionalInfo,
+      });
+      toast("Quote request submitted", {
+        description: "We will get back to you shortly with a quote.",
+      });
+      form.reset();
+    } catch (err) {
+      console.error("Quote request failed:", err);
+      toast("We couldn't send your request", {
+        description: `Please try again, or reach us on WhatsApp at ${WHATSAPP_NUMBER}.`,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
