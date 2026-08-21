@@ -72,7 +72,7 @@ const FrequentlyShippedItems = () => {
                 Double-walled box designed for electronics, measuring 24½" x 24½" x 27½" with 9.55 cu ft capacity. Perfect for shipping speakers, gaming systems, and other large electronics.
               </p>
               <div className="mt-4">
-                <a href="https://www.uhaul.com/MovingSupplies/Boxes/Electronics-Boxes/Large-Electronics-Box/?id=21387" 
+                <a href="https://www.uhaul.com/MovingSupplies/Boxes/Electronics-Boxes/Large-Electronics-Box/?id=3461" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-green-600 text-green-600 hover:bg-green-600 hover:text-white">
@@ -141,7 +141,7 @@ const FrequentlyShippedItems = () => {
                 Durable 30-quart cooler, ideal for shipping temperature-sensitive items or for recreational use. Features a comfort grip handle and secure lid.
               </p>
               <div className="mt-4">
-                <a href="https://www.igloocoolers.com/collections/hard-sided-coolers" 
+                <a href="https://www.igloocoolers.com/products/latitude-30-qt-cooler" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-gray-500 text-gray-500 hover:bg-gray-500 hover:text-white">
@@ -174,7 +174,7 @@ const FrequentlyShippedItems = () => {
                 Large 150-quart Coleman cooler, perfect for shipping larger quantities of temperature-sensitive items. Features durable construction with a secure-fit lid and easy-grip handles.
               </p>
               <div className="mt-4">
-                <a href="https://www.coleman.com/coolers/hard-coolers/" 
+                <a href="https://www.coleman.com/coolers-drinkware/coolers/hard-coolers/classic-series-150-quart-marine-hard-cooler/SAP_3000006577.html" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
@@ -207,7 +207,7 @@ const FrequentlyShippedItems = () => {
                 High-quality Thai Hom Mali Jasmine Rice, perfect for shipping to family and friends. This aromatic rice is a staple in many households.
               </p>
               <div className="mt-4">
-                <a href="https://www.samsclub.com/p/mm-jasmine-rice-25lb/prod21291410" 
+                <a href="https://www.samsclub.com/ip/members-mark-thai-jasmine-rice-25-lb/15385403896" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-yellow-500 text-yellow-500 hover:bg-yellow-500 hover:text-white">
@@ -240,7 +240,7 @@ const FrequentlyShippedItems = () => {
                 Kirkland Signature Thai Hom Mali Jasmine Rice, 50 pound bag. Premium quality, naturally fragrant long grain white rice from Thailand.
               </p>
               <div className="mt-4">
-                <a href="https://www.costco.com/kirkland-signature-thai-hom-mali-jasmine-rice%2c-50-lbs.product.100334875.html" 
+                <a href="https://www.costcobusinessdelivery.com/p/-/kirkland-signature-thai-hom-mali-jasmine-rice-long-grain-50-lbs/11956061" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-purple-500 text-purple-500 hover:bg-purple-500 hover:text-white">
@@ -273,7 +273,7 @@ const FrequentlyShippedItems = () => {
                 Sturdy plastic storage container with secure lid, perfect for shipping personal belongings, household items, and more.
               </p>
               <div className="mt-4">
-                <a href="https://www.homedepot.com/p/Husky-27-Gal-Storage-Tote-with-Lid-Heavy-Duty-249043/314096242" 
+                <a href="https://www.homedepot.com/p/HDX-27-Gal-Tough-Storage-Tote-in-Black-and-Yellow-999-27G-HDX/327528802" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-orange-500 text-orange-500 hover:bg-orange-500 hover:text-white">
@@ -341,7 +341,7 @@ const FrequentlyShippedItems = () => {
                 Heavy-duty cardboard box (18x18x24) with reinforced corners, ideal for shipping books, kitchen items, and other household goods. This box provides excellent protection during transit.
               </p>
               <div className="mt-4">
-                <a href="https://www.lowes.com/pd/PACK-N-SEND-Heavy-Duty-Large-Moving-Box/1000192793" 
+                <a href="https://www.lowes.com/pd/Lowe-s-24-in-W-x-18-in-H-x-18-in-D-Large-Cardboard-Moving-Box-with-Handle-Holes/5015199529" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
@@ -374,7 +374,7 @@ const FrequentlyShippedItems = () => {
                 Heavy-duty plastic drum with secure lid and 55-gallon capacity. Ideal for shipping or storing liquids, powders, and other bulk materials.
               </p>
               <div className="mt-4">
-                <a href="https://www.uline.com/Product/Detail/S-10755BLU/Drums/Plastic-Drum-55-Gallon-Open-Top-Blue" 
+                <a href="https://www.uline.com/Product/Detail/S-9945BLU/Drums/Plastic-Drum-with-Lid-55-Gallon-Open-Top-Blue" 
                    target="_blank" 
                    rel="noopener noreferrer">
                   <Button variant="outline" className="w-full border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white">
