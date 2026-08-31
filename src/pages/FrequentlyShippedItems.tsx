@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import NavMenu from "@/components/NavMenu";
 import Footer from "@/components/Footer";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,12 +18,12 @@ const FrequentlyShippedItems = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {/* Gold Coast Large Box Item Card */}
           <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-            <div className="bg-white p-0">
+            <div className="bg-white p-4">
               <AspectRatio ratio={4/3} className="bg-white relative">
                 <img 
                   src="/lovable-uploads/988cb0a5-695e-4910-8ad1-1888c7e766c5.png" 
                   alt="Gold Coast Large Box 24.5x24.5x27" 
-                  className="object-contain absolute inset-0 w-full h-full scale-125"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
                 />
               </AspectRatio>
             </div>
@@ -104,7 +105,11 @@ const FrequentlyShippedItems = () => {
                     <TableCell className="py-1 text-right font-bold text-blue-600">$150</TableCell>
                   </TableRow>
                   <TableRow>
-                    <TableCell className="py-1 pl-0">50" to 62" TV</TableCell>
+                    <TableCell className="py-1 pl-0">43" to 49" TV</TableCell>
+                    <TableCell className="py-1 text-right font-bold text-blue-600">$220</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell className="py-1 pl-0">50" to 64" TV</TableCell>
                     <TableCell className="py-1 text-right font-bold text-blue-600">$220</TableCell>
                   </TableRow>
                   <TableRow>
@@ -287,12 +292,12 @@ const FrequentlyShippedItems = () => {
 
           {/* Gold Coast Large Box Item Card - 18x18x24 */}
           <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
-            <div className="bg-white p-0">
+            <div className="bg-white p-4">
               <AspectRatio ratio={4/3} className="bg-white relative">
                 <img 
                   src="/lovable-uploads/cfa9a1b5-7f08-4828-a5ac-e71e99596f8b.png" 
                   alt="Gold Coast Regular Box 18x18x24" 
-                  className="object-contain absolute inset-0 w-full h-full scale-125"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
                 />
               </AspectRatio>
             </div>
@@ -385,8 +390,256 @@ const FrequentlyShippedItems = () => {
               </div>
             </CardContent>
           </Card>
+          {/* 40 Gallon Tote Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/40-gallon-storage-tote.jpg"
+                  alt="40 Gallon Storage Tote"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">40 Gallon Storage Tote</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$110</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Large plastic storage container with secure lid, measuring 24" x 22" x 22". A step up from the 27-gallon tote for bulkier household loads.
+              </p>
+              <div className="mt-4">
+                <Link to="/request-quote">
+                  <Button variant="outline" className="w-full border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white">
+                    Request a Quote
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 77 Gallon Tote Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/77-gallon-storage-tote.jpg"
+                  alt="77 Gallon Storage Tote"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">77 Gallon Storage Tote</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$200</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Extra-large plastic storage tote, 28" x 24" x 28". Our biggest tote, ideal for consolidating bulky household goods into a single container.
+              </p>
+              <div className="mt-4">
+                <Link to="/request-quote">
+                  <Button variant="outline" className="w-full border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white">
+                    Request a Quote
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Wardrobe Box Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/wardrobe-box.jpg"
+                  alt="U-Haul Wardrobe Box with hanging rail"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">Wardrobe Box</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$250</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Tall wardrobe box with a metal hanging rail, 18" x 21" x 46" with 10 cu ft capacity. Clothes travel on their hangers and arrive ready to hang.
+              </p>
+              <div className="mt-4">
+                <Link to="/request-quote">
+                  <Button variant="outline" className="w-full border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white">
+                    Request a Quote
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Bale of Clothes Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/bale-of-clothes.jpg"
+                  alt="Bale of Clothes"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">Bale of Clothes</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$70</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Compressed bale of clothing — the most economical way to send larger quantities of garments to family and friends.
+              </p>
+              <div className="mt-4">
+                <Link to="/request-quote">
+                  <Button variant="outline" className="w-full border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white">
+                    Request a Quote
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Cooking Oil Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/cooking-oil-box.jpg"
+                  alt="Boxed cooking oil"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">Cooking Oil (box)</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$5</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Boxed cooking oil, 18" x 12" x 10", priced per box. One of the most common additions to a household shipment.
+              </p>
+              <div className="mt-4">
+                <a href="https://www.samsclub.com/ip/member-s-mark-pure-soybean-oil-35-lbs/13765556327"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full border-yellow-500 text-yellow-600 hover:bg-yellow-500 hover:text-white">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Buy at Sam's Club
+                  </Button>
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* 5 Gallon Bucket Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/5-gallon-bucket.jpg"
+                  alt="5 Gallon Bucket with lid"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">5 Gallon Bucket</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$10</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Five-gallon bucket with a sealed lid, 16" x 16" x 18". Ideal for detergents, oils, and dry goods that need to stay sealed in transit.
+              </p>
+              <div className="mt-4">
+                <a href="https://www.walmart.com/ip/ePackageSupply-Bucket-with-Lid-Food-Grade-Buckets-White-5-Gallon/605149847"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Buy at Walmart
+                  </Button>
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Tire Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/tire.jpg"
+                  alt="Vehicle tire"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">Tire</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$40</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Single vehicle tire, priced per tire. Commonly shipped alongside vehicle parts and household consignments.
+              </p>
+              <div className="mt-4">
+                <a href="https://www.walmart.com/ip/Goodyear-Assurance-All-Season-All-Season-205-55R16-91H-Passenger-Tire/43084376"
+                   target="_blank"
+                   rel="noopener noreferrer">
+                  <Button variant="outline" className="w-full border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white">
+                    <ExternalLink className="mr-2 h-4 w-4" />
+                    Buy at Walmart
+                  </Button>
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Pallet Item Card */}
+          <Card className="overflow-hidden shadow-lg hover:shadow-xl transition-shadow">
+            <div className="bg-white p-4">
+              <AspectRatio ratio={4/3} className="bg-white relative">
+                <img
+                  src="/lovable-uploads/pallet.jpg"
+                  alt="Shipping pallet"
+                  className="object-contain absolute inset-0 w-full h-full p-2"
+                />
+              </AspectRatio>
+            </div>
+            <CardContent className="p-6">
+              <h3 className="text-xl font-bold mb-2">Pallet</h3>
+              <div className="flex justify-between items-center">
+                <div className="text-gray-600">Shipping Cost:</div>
+                <div className="text-2xl font-bold text-blue-600">$980</div>
+              </div>
+              <p className="text-gray-500 mt-4 text-sm mb-4">
+                Full pallet shipping, 48" x 40" x 48". For commercial loads and bulk consignments too large to send as individual boxes.
+              </p>
+              <div className="mt-4">
+                <Link to="/request-quote">
+                  <Button variant="outline" className="w-full border-amber-500 text-amber-600 hover:bg-amber-500 hover:text-white">
+                    Request a Quote
+                  </Button>
+                </Link>
+              </div>
+            </CardContent>
+          </Card>
         </div>
-        
+
         <div className="mt-16 bg-blue-50 p-6 rounded-lg">
           <h2 className="text-2xl font-semibold mb-4">Why Ship with Gold Coast?</h2>
           <ul className="list-disc pl-6 space-y-2">
