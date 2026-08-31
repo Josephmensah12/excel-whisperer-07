@@ -1,0 +1,61 @@
+# AWS Amplify custom response headers.
+#
+# Amplify's default is `public, max-age=0, s-maxage=31536000` on EVERY path,
+# which is wrong in both directions at once:
+#
+#   - HTML is held at the CloudFront edge for a year. index.html is the file
+#     that names the content-hashed JS bundle, so a stale copy pins a visitor
+#     to an old build indefinitely. This is why shipped changes kept looking
+#     un-deployed.
+#   - Hashed assets get max-age=0, so browsers re-download the whole bundle on
+#     every visit even though its filename changes whenever its contents do.
+#
+# Rules are ordered general -> specific. Amplify applies the more specific
+# pattern for a given path.
+#
+# SEO note: this changes no URL, status code, redirect, canonical or meta tag,
+# so nothing about how the site is indexed changes. The effect on search is
+# positive if anything -- faster repeat loads (a Core Web Vitals signal) and
+# HTML that goes stale in minutes rather than months, so new content is
+# crawled sooner.
+
+customHeaders:
+  # Catch-all, which in practice means HTML: every SPA route (/track,
+  # /frequently-shipped-items, ...) is a rewrite of index.html and is requested
+  # under its own path, so it cannot be matched by an *.html pattern.
+  #
+  # max-age=0 makes the browser revalidate every load (cheap: a 304 when
+  # unchanged). s-maxage=300 lets CloudFront absorb traffic while capping how
+  # long a deploy can take to reach everyone at five minutes.
+  - pattern: '/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=0, s-maxage=300, must-revalidate'
+
+  # Vite build output. Filenames carry a content hash, so a given URL's bytes
+  # never change and it is safe to cache permanently. `immutable` also tells
+  # the browser not to bother revalidating.
+  - pattern: '/assets/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=31536000, immutable'
+
+  # Product photos and static uploads. Filenames are stable and get replaced in
+  # place, so a year would strand an updated photo. A day is long enough to be
+  # effectively free on repeat views and short enough to correct a bad image.
+  - pattern: '/lovable-uploads/**'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=86400'
+
+  # Crawler files. Keep these short so a sitemap or robots change is picked up
+  # on the next crawl rather than whenever the edge happens to expire.
+  - pattern: '/robots.txt'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
+
+  - pattern: '/sitemap.xml'
+    headers:
+      - key: 'Cache-Control'
+        value: 'public, max-age=3600'
