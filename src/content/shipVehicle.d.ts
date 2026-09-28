@@ -8,7 +8,6 @@ export const DISCLAIMER: string;
 export const WAREHOUSE: { city: string; line: string };
 export const DESTINATION: { city: string; line: string };
 export const STEPS: { title: string; body: string }[];
-export const PRICE_FACTORS: { title: string; body: string }[];
 export const FAQ: { q: string; a: string }[];
 export function isHoustonAreaZip(zip: string | null | undefined): boolean;
 export function jsonLd(): Record<string, unknown>[];

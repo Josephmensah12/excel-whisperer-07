@@ -56,13 +56,11 @@ const body = `
 <main style="max-width:72rem;margin:0 auto;padding:6rem 1rem 4rem;font-family:Inter,system-ui,sans-serif;line-height:1.6">
   <h1>${esc(page.H1)}</h1>
   <p>${esc(page.INTRO)}</p>
-  <p>Route: your city, by inland transport to our warehouse in ${esc(page.WAREHOUSE.city)} (${esc(page.WAREHOUSE.line)}), then by container or RoRo vessel to ${esc(page.DESTINATION.city)}. Cars, SUVs, pickup trucks and vans, running or not.</p>
+  <p>Route: your city, by inland transport to ${esc(page.WAREHOUSE.city)} (${esc(page.WAREHOUSE.line)}), then by container to ${esc(page.DESTINATION.city)}. Cars, SUVs, pickup trucks and vans, running or not.</p>
   <p>Call <a href="tel:+18322959347">(832) 295-9347</a> or WhatsApp <a href="https://wa.me/17138261087">+1 713-826-1087</a>.</p>
   <p><strong>About the estimate:</strong> ${esc(page.DISCLAIMER)}</p>
   <h2>How shipping a car to Ghana works</h2>
   <ol>${page.STEPS.map((s) => `<li><h3>${esc(s.title)}</h3><p>${esc(s.body)}</p></li>`).join("")}</ol>
-  <h2>What affects the price</h2>
-  <dl>${page.PRICE_FACTORS.map((f) => `<dt>${esc(f.title)}</dt><dd>${esc(f.body)}</dd>`).join("")}</dl>
   <h2>Car shipping questions</h2>
   <dl>${page.FAQ.map((f) => `<dt>${esc(f.q)}</dt><dd>${esc(f.a)}</dd>`).join("")}</dl>
 </main>`;
