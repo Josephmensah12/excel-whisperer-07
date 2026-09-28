@@ -4,7 +4,9 @@ import { MessageCircle } from 'lucide-react';
 
 const WhatsAppButton = () => {
   // Using the WhatsApp number from the footer
-  const whatsappNumber = "7138261087"; // Without special characters
+  // wa.me needs the full international number: without the leading 1 this
+  // opened a chat with +7 138 261 087 instead of our US number.
+  const whatsappNumber = "17138261087";
   const whatsappUrl = `https://wa.me/${whatsappNumber}`;
 
   return (
