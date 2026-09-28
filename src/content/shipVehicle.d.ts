@@ -1,0 +1,11 @@
+export const SITE_URL: string;
+export const PATH: string;
+export const TITLE: string;
+export const DESCRIPTION: string;
+export const H1: string;
+export const INTRO: string;
+export const DISCLAIMER: string;
+export const STEPS: { title: string; body: string }[];
+export const PRICE_FACTORS: { title: string; body: string }[];
+export const FAQ: { q: string; a: string }[];
+export function jsonLd(): Record<string, unknown>[];

@@ -44,6 +44,12 @@ const NavMenu = () => {
               Shipping Calculator
             </Link>
             <Link
+              to="/ship-a-vehicle"
+              className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+            >
+              Ship a Vehicle
+            </Link>
+            <Link
               to="/frequently-shipped-items"
               className="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
             >
@@ -109,6 +115,13 @@ const NavMenu = () => {
               onClick={closeMenu}
             >
               Shipping Calculator
+            </Link>
+            <Link
+              to="/ship-a-vehicle"
+              className="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-gray-50"
+              onClick={closeMenu}
+            >
+              Ship a Vehicle
             </Link>
             <Link
               to="/frequently-shipped-items"

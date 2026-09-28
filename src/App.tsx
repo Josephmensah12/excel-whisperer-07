@@ -12,10 +12,12 @@ import AdminShipments from "@/pages/AdminShipments";
 import ShipVehicle from "@/pages/ShipVehicle";
 import { Toaster } from "@/components/ui/toaster";
 import WhatsAppButton from "@/components/WhatsAppButton";
+import RouteSeo from "@/components/RouteSeo";
 
 function App() {
   return (
     <>
+      <RouteSeo />
       <Routes>
         <Route path="/" element={<Index />} />
         <Route path="/request-call" element={<RequestCall />} />

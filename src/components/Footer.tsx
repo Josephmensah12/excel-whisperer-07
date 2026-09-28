@@ -118,12 +118,18 @@ const Footer = () => {
               {[
                 { label: "Air Freight", desc: "Express delivery" },
                 { label: "Sea Freight", desc: "Container shipping" },
-                { label: "Vehicle Shipping", desc: "Cars & equipment" },
+                { label: "Vehicle Shipping", desc: "Cars & equipment", to: "/ship-a-vehicle" },
                 { label: "Customs Clearance", desc: "Full-service" },
                 { label: "Door-to-Door", desc: "Complete logistics" }
               ].map((service) => (
                 <li key={service.label} className="flex items-center justify-between text-sm">
-                  <span className="text-primary-foreground">{service.label}</span>
+                  {"to" in service ? (
+                    <Link to={service.to} className="text-primary-foreground underline-offset-4 hover:underline">
+                      {service.label}
+                    </Link>
+                  ) : (
+                    <span className="text-primary-foreground">{service.label}</span>
+                  )}
                   <span className="text-primary-foreground/50">{service.desc}</span>
                 </li>
               ))}
