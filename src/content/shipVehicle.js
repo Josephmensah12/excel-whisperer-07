@@ -3,38 +3,44 @@
 // Plain JavaScript on purpose: the React page renders it AND the post-build
 // script scripts/prerender-ship-vehicle.mjs writes it into static HTML, so
 // crawlers that don't run JavaScript (most AI answer engines) can read the page.
-// Edit the words here and both stay in step.
+// Edit the words here and both stay in step. No em dashes in copy.
 
 export const SITE_URL = "https://www.goldcoastgloballogistics.com";
 export const PATH = "/ship-a-vehicle";
 
-export const TITLE = "Ship a Car from Houston to Ghana | Gold Coast Global Logistics";
+export const TITLE = "Ship a Car to Ghana from Anywhere in the US | Gold Coast Global Logistics";
 export const DESCRIPTION =
-  "Free instant estimate to ship your car, SUV, pickup truck or van from Houston, Texas to Tema, Ghana. Enter your VIN. Container and RoRo shipping, running or not.";
+  "Ship your car, SUV, pickup truck or van to Tema, Ghana from any US state through our Houston, Texas warehouse. Enter your VIN for a free instant estimate.";
 
-export const H1 = "Ship a Car from Houston to Ghana";
+export const H1 = "Ship your car to Ghana from anywhere in the US.";
 export const INTRO =
-  "Gold Coast Global Logistics ships cars, SUVs, pickup trucks and vans from Houston, Texas to Tema, Ghana. Enter your VIN below for a free instant shipping estimate. A member of our team will then call you to confirm your price and plan the shipment.";
+  "Wherever the car is today, we bring it to our Houston warehouse and put it on a ship to Tema. Enter your VIN to see an estimate in seconds; someone from our office then calls to confirm it and plan the move.";
 
 export const DISCLAIMER =
   "This is an estimate, not a final price. Your actual charge may be higher or lower once we confirm your vehicle's exact size and condition, the shipping method and the sailing. Ghana import duty and taxes are not included.";
 
+export const WAREHOUSE = {
+  city: "Houston, TX",
+  line: "Gold Coast warehouse, 5301 Polk Street, Bldg 14",
+};
+export const DESTINATION = { city: "Tema, Ghana", line: "Tema port" };
+
 export const STEPS = [
   {
-    title: "Get your estimate",
-    body: "Enter your contact details and your vehicle's 17-character VIN. We identify the vehicle and show you an estimated shipping cost straight away.",
+    title: "Tell us about the car",
+    body: "Your VIN tells us the make, model and body type, and you see an estimate straight away.",
   },
   {
-    title: "We confirm and book",
-    body: "A Gold Coast representative calls you to confirm the vehicle's size and condition, the shipping method and the next sailing.",
+    title: "We call you",
+    body: "Someone from our Houston office confirms the vehicle, its condition, the shipping method and the next sailing. If the car is outside the Houston area, we price the trip to our warehouse on the same call.",
   },
   {
-    title: "Get the vehicle ready",
-    body: "Have the vehicle's original title ready: US Customs requires it before any vehicle is exported. Our warehouse is at 5301 Polk Street, Bldg 14, Houston, TX 77023.",
+    title: "The car comes to Houston",
+    body: "Drive it to 5301 Polk Street, or we arrange inland transport from your city. Have the original title ready: US Customs requires it before any vehicle is exported.",
   },
   {
-    title: "Shipped to Tema, Ghana",
-    body: "Your vehicle sails to Tema port in a container or on a roll-on/roll-off (RoRo) vessel, and you can follow the shipment with our online tracking.",
+    title: "It sails to Tema",
+    body: "Your vehicle travels in a container or on a roll-on/roll-off (RoRo) vessel. Follow it on our online tracking until it reaches Tema port.",
   },
 ];
 
@@ -42,6 +48,10 @@ export const PRICE_FACTORS = [
   {
     title: "Vehicle size",
     body: "Space on the ship is priced by size. Compact sedans cost the least, then midsize sedans, SUVs, large SUVs and vans, with full-size pickup trucks at the top.",
+  },
+  {
+    title: "Where the car starts",
+    body: "Cars outside the Houston area travel to our warehouse first. We price that inland leg on the call; it is not part of the online estimate.",
   },
   {
     title: "Running condition",
@@ -59,8 +69,12 @@ export const PRICE_FACTORS = [
 
 export const FAQ = [
   {
-    q: "How much does it cost to ship a car from Houston to Ghana?",
-    a: "It depends mainly on the vehicle's size and whether it runs. Enter your VIN on this page for a free instant estimate for your vehicle; a representative then confirms your exact price. Estimates do not include Ghana import duty and taxes.",
+    q: "How much does it cost to ship a car from the US to Ghana?",
+    a: "It depends mainly on the vehicle's size and whether it runs. Enter your VIN on this page for a free instant estimate of the ocean shipping from Houston to Tema; a representative then confirms your exact price. Estimates do not include inland transport to Houston or Ghana import duty and taxes.",
+  },
+  {
+    q: "Can you ship my car to Ghana if I don't live in Texas?",
+    a: "Yes. We ship from anywhere in the US. Vehicles outside the Houston area are transported to our Houston warehouse first, and we price that inland leg when we call you.",
   },
   {
     q: "Is the online estimate my final price?",
@@ -76,13 +90,19 @@ export const FAQ = [
   },
   {
     q: "How long does it take to ship a car to Ghana?",
-    a: "Transit is typically 4 to 6 weeks. Your representative confirms the next sailing and the expected arrival when you book.",
+    a: "Transit is typically 4 to 6 weeks from sailing. Your representative confirms the next sailing and the expected arrival when you book.",
   },
   {
     q: "Where in Ghana does my vehicle arrive?",
     a: "Vehicles arrive at Tema port. Ask your representative about clearing and onward delivery when you book.",
   },
 ];
+
+/** Greater Houston ZIPs (770xx-775xx) drop off at the warehouse; mirrors the backend. */
+export function isHoustonAreaZip(zip) {
+  const prefix = Number(String(zip || "").slice(0, 3));
+  return prefix >= 770 && prefix <= 775;
+}
 
 /** schema.org data for search engines: the service, and the FAQ above. */
 export function jsonLd() {
@@ -91,11 +111,14 @@ export function jsonLd() {
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      name: "Car shipping from Houston to Ghana",
+      name: "Car shipping from the USA to Ghana",
       serviceType: "Vehicle shipping",
       url,
       description: DESCRIPTION,
-      areaServed: { "@type": "Country", name: "Ghana" },
+      areaServed: [
+        { "@type": "Country", name: "United States" },
+        { "@type": "Country", name: "Ghana" },
+      ],
       provider: {
         "@type": "Organization",
         name: "Gold Coast Global Logistics",

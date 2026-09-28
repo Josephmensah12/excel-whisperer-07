@@ -153,3 +153,58 @@
     text-wrap: balance;
   }
 }
+
+/* ── Ship a Vehicle page (/ship-a-vehicle) ───────────────────────────────
+ * Scoped under .sv so the rest of the site is untouched. Archivo (variable
+ * width) is self-hosted and only downloaded where .sv-wide is used. */
+@font-face {
+  font-family: "Archivo";
+  font-style: normal;
+  font-weight: 500 800;
+  font-stretch: 100% 125%;
+  font-display: swap;
+  src: url("/fonts/archivo-latin-var.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122, U+2212;
+}
+
+@layer components {
+  .sv {
+    --sv-paper: oklch(0.975 0.008 85);
+    --sv-panel: oklch(0.993 0.004 85);
+    --sv-ink: oklch(0.24 0.045 262);
+    --sv-muted: oklch(0.47 0.02 262);
+    --sv-line: oklch(0.89 0.012 80);
+    --sv-gold: oklch(0.82 0.15 82);
+    --sv-gold-wash: oklch(0.9 0.1 88);
+    background: var(--sv-paper);
+    color: var(--sv-ink);
+  }
+  .sv-wide {
+    font-family: "Archivo", "Inter", system-ui, sans-serif;
+    font-stretch: 118%;
+    font-feature-settings: "tnum" 1;
+  }
+  .sv-place {
+    font-family: "Archivo", "Inter", system-ui, sans-serif;
+    font-stretch: 112%;
+    font-weight: 650;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+  /* The one gold moment: a highlighter band under the estimate. Keeps the
+   * number navy (gold text on off-white fails contrast). */
+  .sv-mark {
+    background-image: linear-gradient(transparent 58%, var(--sv-gold-wash) 58%, var(--sv-gold-wash) 92%, transparent 92%);
+    padding-inline: 0.08em;
+  }
+  .sv-reveal {
+    animation: sv-reveal 480ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  }
+  @keyframes sv-reveal {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .sv-reveal { animation: none; }
+  }
+}

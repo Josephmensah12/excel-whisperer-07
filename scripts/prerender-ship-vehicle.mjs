@@ -56,11 +56,7 @@ const body = `
 <main style="max-width:72rem;margin:0 auto;padding:6rem 1rem 4rem;font-family:Inter,system-ui,sans-serif;line-height:1.6">
   <h1>${esc(page.H1)}</h1>
   <p>${esc(page.INTRO)}</p>
-  <ul>
-    <li>Cars, SUVs, pickup trucks and vans</li>
-    <li>Running or non-running vehicles</li>
-    <li>Container or RoRo shipping to Tema port</li>
-  </ul>
+  <p>Route: your city, by inland transport to our warehouse in ${esc(page.WAREHOUSE.city)} (${esc(page.WAREHOUSE.line)}), then by container or RoRo vessel to ${esc(page.DESTINATION.city)}. Cars, SUVs, pickup trucks and vans, running or not.</p>
   <p>Call <a href="tel:+18322959347">(832) 295-9347</a> or WhatsApp <a href="https://wa.me/17138261087">+1 713-826-1087</a>.</p>
   <p><strong>About the estimate:</strong> ${esc(page.DISCLAIMER)}</p>
   <h2>How shipping a car to Ghana works</h2>

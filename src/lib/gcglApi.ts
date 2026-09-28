@@ -59,6 +59,8 @@ export type VehicleEstimateResult = {
   estimate: { low: number; high: number; isRange: boolean } | null;
   /** Why no estimate was given, when it wasn't. */
   reason: null | "decode_failed" | "vin_not_found" | "needs_review";
+  /** Whether the car must first travel to the Houston warehouse (priced on the call). */
+  inland: { required: boolean; from: string } | null;
 };
 
 /** Server-side validation failure, with a message per form field. */
@@ -85,5 +87,10 @@ export async function requestVehicleEstimate(payload: VehicleEstimateRequest): P
   if (res.status === 400 && json?.fields) throw new VehicleEstimateFieldError(json.fields);
   if (!res.ok || !json?.success) throw new Error(json?.error || `Request failed (${res.status})`);
 
-  return { vehicle: json.vehicle ?? null, estimate: json.estimate ?? null, reason: json.reason ?? null };
+  return {
+    vehicle: json.vehicle ?? null,
+    estimate: json.estimate ?? null,
+    reason: json.reason ?? null,
+    inland: json.inland ?? null,
+  };
 }
